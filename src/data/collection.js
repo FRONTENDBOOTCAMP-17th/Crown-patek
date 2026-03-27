@@ -4,7 +4,7 @@ export const collections = [
     name: "서킷",
     slug: "circuit-collection",
     desc: "디즈니와 F1®과의 글로벌 협업을 통해 탄생한 서킷 컬렉션은 질주하는 서킷 위의 폭발적인 에너지를 담았습니다.",
-    banner: "/src/assets/collections/circuit-banner.jpg",
+    banner: "",
     storyUrl: "#",
     products: [
       {
