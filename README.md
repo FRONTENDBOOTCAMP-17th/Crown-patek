@@ -3,6 +3,10 @@
 - [피그마](https://www.figma.com/design/Wl4PONfUzYXLKX80Di2idD/GentleLion?node-id=0-1&t=rJHYPzYycO9Toaq6-1) 프로토 타이핑
 - [기능 명세서](https://docs.google.com/spreadsheets/d/1eMk9LSMSgCT4elowuOH5ih5qwoPIU5I_DoUY5-D9W9Y/edit?usp=sharing) 엑셀 시트
 
+## API
+
+[Swagger](https://frontendbootcamp-17th.github.io/gentlelion/)
+
 ## 문서
 
 자세한 내용은 [Wiki에서 확인하기](https://github.com/FRONTENDBOOTCAMP-17th/gentlelion/wiki)
