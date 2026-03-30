@@ -7,7 +7,7 @@
     <script type="module" src="./src/main.js"></script>
   </head>
   <body>
-    <div class="header relative z-50">
+    <div class="header relative z-110">
       <ul
         class="utility-bar fixed top-0 left-0 w-full h-22.5 flex items-center px-15 list-none m-0 bg-transparent transition-all duration-300 max-md:justify-between max-md:px-3 max-md:h-14"
       >
@@ -244,16 +244,36 @@
           <div
             class="side-bar flex items-center gap-3 max-md:flex max-md:order-1 max-md:flex-1"
           >
-            <button class="hidden max-[768px]:block">
+            <button
+              id="menu-btn"
+              class="relative group p-2 focus:outline-none hidden max-[768px]:block"
+            >
               <svg
                 width="24"
                 height="24"
                 viewBox="0 0 24 24"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
+                class="overflow-visible"
               >
-                <rect x="4" y="8" width="16" height="1.19" fill="white" />
-                <rect x="4" y="15" width="16" height="1.19" fill="white" />
+                <rect
+                  id="line1"
+                  x="4"
+                  y="8"
+                  width="16"
+                  height="1.5"
+                  fill="white"
+                  class="transition-all duration-300 origin-center"
+                />
+                <rect
+                  id="line2"
+                  x="4"
+                  y="15"
+                  width="16"
+                  height="1.5"
+                  fill="white"
+                  class="transition-all duration-300 origin-center"
+                />
               </svg>
             </button>
             <button class="search-item bg-transparent border-none p-1">
