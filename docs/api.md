@@ -23,7 +23,6 @@
   "firstName": "홍",
   "lastName": "길동",
   "phone": "010-1234-5678",
-  "userId": "gentle_user",
   "address": "서울시 강남구 테헤란로 123",
   "addressDetail": "456호"
 }
@@ -34,7 +33,7 @@
 {
   "success": true,
   "data": {
-    "userId": "gentle_user",
+    "userId": 1,
     "email": "user@example.com",
     "firstName": "홍",
     "lastName": "길동",
@@ -43,8 +42,7 @@
     "addressDetail": "456호",
     "createdAt": "2026-03-31T10:00:00Z",
     "points": 100000,
-  },
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+  }
 }
 ```
 
@@ -64,7 +62,7 @@
 {
   "success": true,
   "data": {
-    "userId": "gentle_user",
+    "userId": 1,
     "email": "user@example.com",
     "firstName": "홍",
     "lastName": "길동",
@@ -106,7 +104,7 @@ Authorization: Bearer {token}
 {
   "success": true,
   "data": {
-    "userId": "gentle_user",
+    "userId": 1,
     "email": "user@example.com",
     "firstName": "홍",
     "lastName": "길동",
@@ -143,7 +141,7 @@ Authorization: Bearer {token}
 {
   "success": true,
   "data": {
-    "userId": "gentle_user",
+    "userId": 1,
     "email": "user@example.com",
     "firstName": "길동",
     "lastName": "김",
@@ -165,7 +163,7 @@ Authorization: Bearer {token}
 **Query Parameters:**
 - `category` (optional): 제품 카테고리 (sunglasses, optical)
 - `page` (optional): 페이지 번호 (default: 1)
-- `limit` (optional): 페이지당 항목 수 (default: 20)
+- `limit` (optional): 페이지당 항목 수 (default: 20) 최대 50개까지 가능
 
 **Response:**
 ```json
@@ -174,7 +172,7 @@ Authorization: Bearer {token}
   "data": {
     "products": [
       {
-        "productId": "prod_001",
+        "productId": 1,
         "name": "GENTLE MONSTER 01",
         "price": 290000,
         "images": [
@@ -185,7 +183,7 @@ Authorization: Bearer {token}
         "description": "클래식한 디자인의 선글라스"
       },
       {
-        "productId": "prod_002",
+        "productId": 2,
         "name": "GENTLE MONSTER 02",
         "price": 320000,
         "images": [
@@ -214,7 +212,7 @@ Authorization: Bearer {token}
 {
   "success": true,
   "data": {
-    "productId": "prod_001",
+    "productId": 1,
     "name": "GENTLE MONSTER 01",
     "price": 290000,
     "images": [
@@ -275,8 +273,8 @@ Authorization: Bearer {token}
   "data": {
     "items": [
       {
-        "cartItemId": "cart_001",
-        "productId": "prod_001",
+        "cartItemId": 1,
+        "productId": 1,
         "name": "GENTLE MONSTER 01",
         "price": 290000,
         "quantity": 1,
@@ -284,8 +282,8 @@ Authorization: Bearer {token}
         "color": "Black"
       },
       {
-        "cartItemId": "cart_002",
-        "productId": "prod_002",
+        "cartItemId": 2,
+        "productId": 2,
         "name": "GENTLE MONSTER 02",
         "price": 320000,
         "quantity": 2,
@@ -310,7 +308,7 @@ Authorization: Bearer {token}
 **Request Body:**
 ```json
 {
-  "productId": "prod_001",
+  "productId": 1,
   "quantity": 1,
   "color": "Black"
 }
@@ -321,8 +319,8 @@ Authorization: Bearer {token}
 {
   "success": true,
   "data": {
-    "cartItemId": "cart_001",
-    "productId": "prod_001",
+    "cartItemId": 1,
+    "productId": 1,
     "name": "GENTLE MONSTER 01",
     "price": 290000,
     "quantity": 1,
@@ -333,7 +331,7 @@ Authorization: Bearer {token}
 ```
 
 ### 4.3 장바구니 수정
-**Endpoint:** `PUT /api/cart/:cartItemId`
+**Endpoint:** `PUT /api/cart`
 
 **Headers:**
 ```
@@ -343,6 +341,7 @@ Authorization: Bearer {token}
 **Request Body:**
 ```json
 {
+  "cartItemId": 1
   "quantity": 2
 }
 ```
@@ -352,8 +351,8 @@ Authorization: Bearer {token}
 {
   "success": true,
   "data": {
-    "cartItemId": "cart_001",
-    "productId": "prod_001",
+    "cartItemId": 1,
+    "productId": 1,
     "name": "GENTLE MONSTER 01",
     "price": 290000,
     "quantity": 2,
@@ -363,8 +362,10 @@ Authorization: Bearer {token}
 }
 ```
 
-### 4.4 장바구니 삭제
+### 4.4 장바구니 Item 삭제
 **Endpoint:** `DELETE /api/cart/:cartItemId`
+
+DELETE의 경우 서버에서 Body로 온것은 무시할 수도 있다.
 
 **Headers:**
 ```
@@ -398,8 +399,8 @@ Authorization: Bearer {token}
   "data": {
     "items": [
       {
-        "wishlistItemId": "wish_001",
-        "productId": "prod_003",
+        "wishlistItemId": 1,
+        "productId": 3,
         "name": "GENTLE MONSTER 03",
         "price": 350000,
         "image": "https://example.com/image5.jpg",
@@ -407,8 +408,8 @@ Authorization: Bearer {token}
         "addedAt": "2026-03-30T10:00:00Z"
       },
       {
-        "wishlistItemId": "wish_002",
-        "productId": "prod_004",
+        "wishlistItemId": 2,
+        "productId": 4,
         "name": "GENTLE MONSTER 04",
         "price": 280000,
         "image": "https://example.com/image6.jpg",
@@ -432,7 +433,7 @@ Authorization: Bearer {token}
 **Request Body:**
 ```json
 {
-  "productId": "prod_003",
+  "productId": 3,
   "color": "Black"
 }
 ```
@@ -442,8 +443,8 @@ Authorization: Bearer {token}
 {
   "success": true,
   "data": {
-    "wishlistItemId": "wish_001",
-    "productId": "prod_003",
+    "wishlistItemId": 1,
+    "productId": 3,
     "name": "GENTLE MONSTER 03",
     "price": 350000,
     "image": "https://example.com/image5.jpg",
@@ -478,6 +479,20 @@ Authorization: Bearer {token}
 - 주문 시 포인트로 결제하며, 포인트가 부족할 경우 주문이 거부됩니다.
 
 ### 6.1 주문 생성
+
+장바구니에 담고, 그다음날 산다.
+그런데 상품이 가격이 5000원 올랐다.
+어떻게 하지?
+장바구니에 담긴 가격으로 팔아야해?
+실제 가격으로 가격으로 팔아야해?
+
+---
+
+사용자가 5000원에 주문하고 구입하였다.
+관리자는 이 사용자가 현재가격은 10,000원이다. 그럼 이 사용자가 얼마에 샀는지 알 수 있을까? 없을까?
+
+---
+
 **Endpoint:** `POST /api/orders`
 
 **Headers:**
@@ -490,12 +505,12 @@ Authorization: Bearer {token}
 {
   "items": [
     {
-      "productId": "prod_001",
+      "productId": 1,
       "quantity": 1,
       "color": "Black"
     },
     {
-      "productId": "prod_002",
+      "productId": 2,
       "quantity": 2,
       "color": "Tortoise"
     }
@@ -517,14 +532,14 @@ Authorization: Bearer {token}
 {
   "success": true,
   "data": {
-    "orderId": "order_001",
+    "orderId": 1,
     "userId": "gentle_user",
     "orderNumber": "GM20260331001",
     "orderDate": "2026-03-31T12:00:00Z",
     "status": "pending",
     "items": [
       {
-        "productId": "prod_001",
+        "productId": 1,
         "name": "GENTLE MONSTER 01",
         "price": 290000,
         "quantity": 1,
@@ -532,7 +547,7 @@ Authorization: Bearer {token}
         "image": "https://example.com/image1.jpg"
       },
       {
-        "productId": "prod_002",
+        "productId": 2,
         "name": "GENTLE MONSTER 02",
         "price": 320000,
         "quantity": 2,
@@ -560,6 +575,8 @@ Authorization: Bearer {token}
 ### 6.2 주문 내역 조회
 **Endpoint:** `GET /api/orders`
 
+현재 상품의 정보들을 기반하여 주문 내역을 보여준다면. 이 회사는 1000년동안 같은 가격으로 팔아야한다.
+
 **Headers:**
 ```
 Authorization: Bearer {token}
@@ -576,14 +593,14 @@ Authorization: Bearer {token}
   "data": {
     "orders": [
       {
-        "orderId": "order_001",
-        "userId": "gentle_user",
+        "orderId": 1,
+        "userId": 1,
         "orderNumber": "GM20260331001",
         "orderDate": "2026-03-31T12:00:00Z",
         "status": "delivered",
         "items": [
           {
-            "productId": "prod_001",
+            "productId": 1,
             "name": "GENTLE MONSTER 01",
             "price": 290000,
             "quantity": 1,
@@ -594,8 +611,8 @@ Authorization: Bearer {token}
         "deliveryDate": "2026-04-03T10:00:00Z"
       },
       {
-        "orderId": "order_002",
-        "userId": "gentle_user",
+        "orderId": 2,
+        "userId": 1,
         "orderNumber": "GM20260330001",
         "orderDate": "2026-03-30T15:00:00Z",
         "status": "shipping",
