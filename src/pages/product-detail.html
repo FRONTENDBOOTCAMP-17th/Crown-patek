@@ -15,182 +15,6 @@
       type="module"
       src="../components/mobilemenu/menuAnimation.js"
     ></script>
-    <style>
-      /* ── 아코디언 ── */
-      .acc-content {
-        max-height: 0;
-        overflow: hidden;
-        transition: max-height 0.35s ease;
-      }
-      .acc-content.open {
-        max-height: 600px;
-      }
-      .acc-icon {
-        display: inline-block;
-        font-size: 16px;
-        line-height: 1;
-      }
-
-      /* ── 데스크탑 PDP 이미지 컨테이너 ──
-         공홈: pdp-thumb inner = w-[1080px] h-[1080px] 고정 + overflow:hidden
-         실제 보이는 크기(846px)로 crop됨 → 1:1 비율 유지
-      */
-      .pdp-img-container {
-        position: relative;
-        width: 100%;
-        padding-top: 100%; /* 1:1 */
-        overflow: hidden;
-        background: #f3f4f6;
-      }
-      .pdp-img-container img {
-        /* 공홈처럼 이미지를 중앙 crop */
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        width: 130%; /* 이미지가 컨테이너보다 크게 → crop 효과 */
-        height: 130%;
-        object-fit: cover;
-        object-position: center;
-        display: block;
-      }
-
-      /* ── 모바일 슬라이더 ── */
-      .mobile-slider-wrap {
-        position: relative;
-        width: 100%;
-        aspect-ratio: 344 / 478;
-        overflow: hidden;
-        background: #f3f4f6;
-        cursor: grab;
-        user-select: none;
-        -webkit-user-select: none;
-        touch-action: pan-y;
-      }
-      .mobile-slider-wrap.grabbing {
-        cursor: grabbing;
-      }
-      .mobile-slider-track {
-        position: absolute;
-        top: 0;
-        left: 0;
-        height: 100%;
-        display: flex;
-        transition: transform 0.3s ease;
-        will-change: transform;
-        touch-action: pan-y;
-      }
-      .mobile-slide {
-        flex: 0 0 100%;
-        min-width: 100%;
-        width: 100%;
-        height: 100%;
-        overflow: hidden;
-      }
-      .mobile-slide img {
-        width: 100%;
-        height: 100%;
-        object-fit: contain;
-        object-position: center;
-        transform: scale(1.12);
-        display: block;
-        pointer-events: none;
-      }
-      /* 슬라이더 바: 8×1px 직사각형 */
-      .slider-dots {
-        display: flex;
-        justify-content: center;
-        gap: 4px;
-        padding: 8px 0 6px;
-        background: #f3f4f6;
-      }
-      .slider-dot {
-        width: 8px;
-        height: 1px;
-        border-radius: 0;
-        background: rgba(28, 26, 26, 0.25);
-        cursor: pointer;
-        transition: background-color 0.2s;
-      }
-      .slider-dot.active {
-        background-color: rgb(28, 26, 26);
-      }
-
-      /* ── 데스크탑 (769px+) ──
-         공홈 실측: thumbnail=846px, info=423px, total=2545px
-         thumbnail≈33%, info≈17% → 하지만 flex로 구현
-         공홈: product-thumbnail은 flex-grow, product-info는 fixed width
-      */
-      @media (min-width: 769px) {
-        .mobile-slider-wrap,
-        .slider-dots {
-          display: none !important;
-        }
-        .desktop-thumb-box {
-          display: block;
-        }
-        .product-top {
-          display: flex;
-          flex-direction: row;
-        }
-        .product-thumbnail {
-          flex: 1;
-          min-width: 0;
-        }
-        .product-info {
-          flex-shrink: 0;
-          width: 423px;
-        }
-        .product-info-box {
-          position: sticky;
-          top: 0;
-          padding-top: 290px;
-          padding-left: 36px;
-          padding-right: 60px;
-          width: 327px;
-          box-sizing: content-box;
-        }
-      }
-
-      /* ── 모바일 (768px 이하) ── */
-      @media (max-width: 768px) {
-        .desktop-thumb-box {
-          display: none !important;
-        }
-        .product-top {
-          flex-direction: column !important;
-        }
-        .product-thumbnail,
-        .product-info {
-          width: 100% !important;
-        }
-        .product-info-box {
-          position: static !important;
-          padding: 0 !important;
-          width: 100% !important;
-          box-sizing: border-box;
-        }
-      }
-
-      /* 유사한 프레임 이미지 (1:1 crop) */
-      .similar-img-wrap {
-        position: relative;
-        width: 100%;
-        padding-top: 138.1%; /* 상품카드와 동일 비율 */
-        overflow: hidden;
-        background: #f3f4f6;
-      }
-      .similar-img-wrap img {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        object-position: center;
-        display: block;
-      }
-    </style>
   </head>
 
   <body class="font-gentle bg-[#F3F4F6] text-[#111111]">
@@ -479,25 +303,40 @@
     <!-- ══ PDP 본문 ══ -->
     <div class="product-detail min-h-screen">
       <div class="gentle-pdp">
-        <div class="product-top flex flex-wrap">
+        <div class="product-top flex flex-col md:flex-row flex-wrap">
           <!-- 이미지 영역 -->
-          <div class="product-thumbnail">
-            <!-- 모바일 슬라이더 -->
-            <div class="mobile-slider-wrap" id="mobileSliderWrap">
-              <div class="mobile-slider-track" id="mobileSliderTrack"></div>
+          <div class="product-thumbnail w-full md:flex-1 md:min-w-0">
+            <!-- 모바일 슬라이더 (768px 이하) -->
+            <div
+              id="mobileSliderWrap"
+              class="md:hidden relative w-full overflow-hidden bg-[#f3f4f6] cursor-grab select-none touch-pan-y"
+              style="aspect-ratio: 344 / 478"
+            >
+              <div
+                id="mobileSliderTrack"
+                class="absolute top-0 left-0 h-full flex will-change-transform transition-transform duration-300 ease-[ease] touch-pan-y"
+              ></div>
             </div>
-            <div class="slider-dots" id="sliderDots"></div>
-            <!-- 데스크탑 수직 나열 -->
-            <div class="desktop-thumb-box" id="desktopThumbBox"></div>
+
+            <!-- 슬라이더 도트 (모바일) -->
+            <div
+              id="sliderDots"
+              class="md:hidden flex justify-center gap-1 py-2 pb-1.5 bg-[#f3f4f6]"
+            ></div>
+
+            <!-- 데스크탑 수직 나열 (769px+) -->
+            <div id="desktopThumbBox" class="hidden md:block"></div>
           </div>
 
           <!-- 우측 정보 패널 -->
-          <div class="product-info">
-            <div class="product-info-box">
+          <div class="product-info w-full md:flex-shrink-0 md:w-[423px]">
+            <div
+              class="product-info-box static w-full box-border px-6 md:sticky md:top-0 md:pt-[290px] md:pl-9 md:pr-15 md:w-[327px] md:box-content md:px-0"
+            >
               <div class="product-info-container relative">
                 <!-- 상품명 + 북마크 -->
-                <div class="relative mb-[16px] px-[24px] md:px-0">
-                  <div class="info flex flex-col gap-[4px] w-[calc(100%-40px)]">
+                <div class="relative mb-4 px-6 md:px-0">
+                  <div class="info flex flex-col gap-1 w-[calc(100%-40px)]">
                     <h1
                       id="product-name"
                       class="text-[17px] leading-[22px] text-[#111111]"
@@ -509,7 +348,7 @@
                   </div>
                   <button
                     id="bookmark-btn"
-                    class="absolute right-[24px] md:right-0 top-0 cursor-pointer bg-transparent border-none p-0"
+                    class="absolute right-6 md:right-0 top-0 cursor-pointer bg-transparent border-none p-0"
                     aria-label="찜하기"
                   >
                     <svg
@@ -530,11 +369,11 @@
 
                 <!-- 색상 칩 -->
                 <div
-                  class="flex justify-between items-center mt-[18px] mb-[24px] px-[24px] md:px-0"
+                  class="flex justify-between items-center mt-[18px] mb-6 px-6 md:px-0"
                 >
                   <div
                     id="color-chips"
-                    class="flex flex-wrap items-start gap-x-[8px] gap-y-[4px]"
+                    class="flex flex-wrap items-start gap-x-2 gap-y-1"
                   ></div>
                   <div
                     id="color-text"
@@ -543,17 +382,18 @@
                 </div>
 
                 <!-- CTA 버튼 -->
-                <div class="px-[24px] md:px-0">
+                <div class="px-6 md:px-0">
                   <button
                     id="cart-btn"
-                    class="w-full h-[48px] bg-[#111111] text-white text-[12px] leading-[17px] rounded-[8px] cursor-pointer border-none flex items-center justify-center"
+                    class="w-full h-12 bg-[#111111] text-white text-[12px] leading-[17px] rounded-lg cursor-pointer border-none flex items-center justify-center"
                   >
                     쇼핑백에 추가하기
                   </button>
                 </div>
 
                 <!-- 아코디언 -->
-                <div class="flex flex-col gap-0 mt-[48px] px-[24px] md:px-0">
+                <div class="flex flex-col gap-0 mt-12 px-6 md:px-0">
+                  <!-- 무료 배송 & 반품 -->
                   <div class="acc-item border-t border-[#e5e5e5]">
                     <button
                       class="acc-trigger w-full flex justify-between items-center py-[14px] bg-transparent border-none cursor-pointer"
@@ -562,9 +402,15 @@
                       <span class="text-[12px] leading-[17px] text-[#111111]"
                         >무료 배송 &amp; 반품</span
                       >
-                      <span class="acc-icon text-[#111111]">+</span>
+                      <span
+                        class="acc-icon text-[#111111] text-base leading-none inline-block"
+                        >+</span
+                      >
                     </button>
-                    <div class="acc-content" id="acc-delivery">
+                    <div
+                      id="acc-delivery"
+                      class="acc-content overflow-hidden max-h-0 transition-[max-height] duration-[350ms] ease-[ease]"
+                    >
                       <p
                         class="text-[12px] leading-[17px] text-[#111111] pb-[14px]"
                       >
@@ -575,6 +421,8 @@
                       </p>
                     </div>
                   </div>
+
+                  <!-- 세부 정보 -->
                   <div class="acc-item border-t border-[#e5e5e5]">
                     <button
                       class="acc-trigger w-full flex justify-between items-center py-[14px] bg-transparent border-none cursor-pointer"
@@ -583,15 +431,23 @@
                       <span class="text-[12px] leading-[17px] text-[#111111]"
                         >세부 정보</span
                       >
-                      <span class="acc-icon text-[#111111]">+</span>
+                      <span
+                        class="acc-icon text-[#111111] text-base leading-none inline-block"
+                        >+</span
+                      >
                     </button>
-                    <div class="acc-content" id="acc-detail">
+                    <div
+                      id="acc-detail"
+                      class="acc-content overflow-hidden max-h-0 transition-[max-height] duration-[350ms] ease-[ease]"
+                    >
                       <div
                         id="product-details"
-                        class="flex flex-col gap-[2px] pb-[14px]"
+                        class="flex flex-col gap-0.5 pb-[14px]"
                       ></div>
                     </div>
                   </div>
+
+                  <!-- 사이즈 및 핏 -->
                   <div class="acc-item border-t border-[#e5e5e5]">
                     <button
                       class="acc-trigger w-full flex justify-between items-center py-[14px] bg-transparent border-none cursor-pointer"
@@ -600,12 +456,18 @@
                       <span class="text-[12px] leading-[17px] text-[#111111]"
                         >사이즈 및 핏</span
                       >
-                      <span class="acc-icon text-[#111111]">+</span>
+                      <span
+                        class="acc-icon text-[#111111] text-base leading-none inline-block"
+                        >+</span
+                      >
                     </button>
-                    <div class="acc-content" id="acc-size">
+                    <div
+                      id="acc-size"
+                      class="acc-content overflow-hidden max-h-0 transition-[max-height] duration-[350ms] ease-[ease]"
+                    >
                       <div
                         id="product-size"
-                        class="flex flex-col gap-[2px] pb-[14px]"
+                        class="flex flex-col gap-0.5 pb-[14px]"
                       ></div>
                     </div>
                   </div>
@@ -619,15 +481,14 @@
       <!-- 유사한 프레임 -->
       <section
         id="similar-section"
-        style="display: none"
-        class="px-[24px] md:px-[60px] pt-[48px] pb-[60px]"
+        class="hidden px-6 md:px-15 pt-12 pb-[60px]"
       >
-        <h2 class="text-[12px] leading-[17px] text-[#111111] mb-[20px]">
+        <h2 class="text-[12px] leading-[17px] text-[#111111] mb-5">
           유사한 프레임
         </h2>
         <div
           id="similar-grid"
-          class="grid grid-cols-2 md:grid-cols-5 gap-x-[8px] gap-y-[24px]"
+          class="grid grid-cols-2 md:grid-cols-5 gap-x-2 gap-y-6"
         ></div>
       </section>
     </div>
@@ -683,18 +544,26 @@
         const sliderWrap = document.getElementById("mobileSliderWrap");
 
         images.forEach((src, i) => {
+          // 슬라이드
           const slide = document.createElement("div");
-          slide.className = "mobile-slide";
+          slide.className =
+            "flex-none min-w-full w-full h-full overflow-hidden";
           const img = document.createElement("img");
           img.src = src;
           img.alt = currentProduct.name;
           img.loading = i === 0 ? "eager" : "lazy";
           img.draggable = false;
+          img.className =
+            "w-full h-full object-contain object-center scale-[1.12] block pointer-events-none";
           slide.appendChild(img);
           mobileTrack.appendChild(slide);
 
+          // 도트
           const dot = document.createElement("span");
-          dot.className = "slider-dot" + (i === 0 ? " active" : "");
+          dot.className =
+            i === 0
+              ? "w-[8px] h-[1px] rounded-none bg-[rgb(28,26,26)] cursor-pointer transition-colors duration-200"
+              : "w-[8px] h-[1px] rounded-none bg-[rgba(28,26,26,0.25)] cursor-pointer transition-colors duration-200";
           dot.addEventListener("click", (e) => {
             e.stopPropagation();
             goTo(i, true);
@@ -708,7 +577,12 @@
           mobileTrack.style.transition =
             animate === false ? "none" : "transform 0.3s ease";
           mobileTrack.style.transform = "translateX(-" + curIdx * 100 + "%)";
-          dots.forEach((d, i) => d.classList.toggle("active", i === curIdx));
+          dots.forEach((d, i) => {
+            d.className =
+              i === curIdx
+                ? "w-[8px] h-[1px] rounded-none bg-[rgb(28,26,26)] cursor-pointer transition-colors duration-200"
+                : "w-[8px] h-[1px] rounded-none bg-[rgba(28,26,26,0.25)] cursor-pointer transition-colors duration-200";
+          });
         }
 
         let ptrStartX = 0,
@@ -720,7 +594,8 @@
           ptrStartX = e.clientX;
           mobileTrack.style.transition = "none";
           sliderWrap.setPointerCapture(e.pointerId);
-          sliderWrap.classList.add("grabbing");
+          sliderWrap.classList.remove("cursor-grab");
+          sliderWrap.classList.add("cursor-grabbing");
         });
         sliderWrap.addEventListener("pointermove", (e) => {
           if (!ptrDown) return;
@@ -737,7 +612,8 @@
         sliderWrap.addEventListener("pointerup", (e) => {
           if (!ptrDown) return;
           ptrDown = false;
-          sliderWrap.classList.remove("grabbing");
+          sliderWrap.classList.remove("cursor-grabbing");
+          sliderWrap.classList.add("cursor-grab");
           sliderWrap.releasePointerCapture(e.pointerId);
           if (ptrDragging) {
             ptrDragging = false;
@@ -756,29 +632,35 @@
         sliderWrap.addEventListener("pointercancel", () => {
           ptrDown = false;
           ptrDragging = false;
-          sliderWrap.classList.remove("grabbing");
+          sliderWrap.classList.remove("cursor-grabbing");
+          sliderWrap.classList.add("cursor-grab");
           goTo(curIdx, true);
         });
 
         // ── 데스크탑 수직 나열 ──
         images.forEach((src, i) => {
+          // 1:1 비율 컨테이너: aspect-square + relative + overflow-hidden
           const wrap = document.createElement("div");
-          wrap.className = "pdp-img-container"; // CSS에서 1:1 비율 처리
+          wrap.className = "relative w-full overflow-hidden bg-[#f3f4f6]";
+          wrap.style.paddingTop = "100%"; // aspect-square fallback (tailwind aspect-square도 가능하나 확실히 하기 위해)
+
           const img = document.createElement("img");
           img.src = src;
           img.alt = currentProduct.name;
           img.loading = i === 0 ? "eager" : "lazy";
+          // 공홈 crop 효과: 중앙 기준 130% 크기
+          img.className =
+            "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[130%] h-[130%] object-cover object-center block";
           wrap.appendChild(img);
           desktopBox.appendChild(wrap);
         });
 
         // ── 색상 칩 ──
         const chip = document.createElement("button");
-        chip.style.cssText =
-          "background:none;border:none;cursor:pointer;padding:0;";
+        chip.className = "bg-transparent border-none cursor-pointer p-0";
         chip.innerHTML =
-          '<div style="width:24px;height:24px;background:#C20A40;"></div>' +
-          '<span style="display:block;width:100%;height:1px;background:#111;margin-top:2px;"></span>';
+          '<div class="w-6 h-6 bg-[#C20A40]"></div>' +
+          '<span class="block w-full h-[1px] bg-[#111] mt-0.5"></span>';
         colorChipsEl.appendChild(chip);
         colorTextEl.textContent = "레드 / 레드";
 
@@ -794,8 +676,7 @@
         ].forEach((line) => {
           const p = document.createElement("p");
           p.textContent = line;
-          p.style.cssText =
-            "font-size:12px;line-height:17px;color:#111111;margin:0;";
+          p.className = "text-[12px] leading-[17px] text-[#111111] m-0";
           detailsEl.appendChild(p);
         });
 
@@ -809,8 +690,7 @@
         ].forEach((line) => {
           const p = document.createElement("p");
           p.textContent = line;
-          p.style.cssText =
-            "font-size:12px;line-height:17px;color:#111111;margin:0;";
+          p.className = "text-[12px] leading-[17px] text-[#111111] m-0";
           sizeEl.appendChild(p);
         });
 
@@ -820,8 +700,6 @@
           currentProduct.status === "재입고 예정";
         if (isSoldOut) {
           cartBtn.textContent = "알림 받기";
-          cartBtn.style.cssText =
-            "width:100%;height:48px;background:#111111;color:#ffffff;border:none;border-radius:8px;font-size:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;";
         }
         cartBtn.addEventListener("click", () => {
           alert(
@@ -845,7 +723,8 @@
           .filter((p) => String(p.id) !== String(productId))
           .slice(0, 5);
         if (similarProducts.length > 0) {
-          document.getElementById("similar-section").style.display = "block";
+          document.getElementById("similar-section").classList.remove("hidden");
+          document.getElementById("similar-section").classList.add("block");
           const grid = document.getElementById("similar-grid");
           similarProducts.forEach((p) => {
             const a = document.createElement("a");
@@ -854,25 +733,32 @@
               collectionSlug +
               "&productId=" +
               p.id;
-            a.style.cssText =
-              "display:block;text-decoration:none;cursor:pointer;";
+            a.className = "block no-underline cursor-pointer";
+
+            // 이미지 래퍼: 비율 138.1% (상품카드와 동일)
             const imgWrap = document.createElement("div");
-            imgWrap.className = "similar-img-wrap"; // CSS 클래스로 1:1 처리
+            imgWrap.className = "relative w-full overflow-hidden bg-[#f3f4f6]";
+            imgWrap.style.paddingTop = "138.1%";
+
             const img = document.createElement("img");
             img.src = (p.images && p.images[0]) || p.image || "";
             img.alt = p.name;
             img.loading = "lazy";
+            img.className =
+              "absolute top-0 left-0 w-full h-full object-cover object-center block";
             imgWrap.appendChild(img);
+
             const info = document.createElement("div");
-            info.style.cssText = "padding:8px 0 0;";
+            info.className = "pt-2";
+
             const pName = document.createElement("p");
             pName.textContent = p.name;
-            pName.style.cssText =
-              "font-size:11px;line-height:16px;color:#111111;margin:0;";
+            pName.className = "text-[11px] leading-4 text-[#111111] m-0";
+
             const pPrice = document.createElement("p");
             pPrice.textContent = p.price + (p.status ? " - " + p.status : "");
-            pPrice.style.cssText =
-              "font-size:11px;line-height:16px;color:#111111;margin:0;";
+            pPrice.className = "text-[11px] leading-4 text-[#111111] m-0";
+
             info.appendChild(pName);
             info.appendChild(pPrice);
             a.appendChild(imgWrap);
@@ -882,21 +768,26 @@
         }
       }
 
-      // ── 아코디언 ──
+      // ── 아코디언 (JS로 max-height 직접 제어) ──
       document.querySelectorAll(".acc-trigger").forEach((btn) => {
         btn.addEventListener("click", () => {
           const id = btn.getAttribute("data-target");
           const content = document.getElementById(id);
           const icon = btn.querySelector(".acc-icon");
-          const isOpen = content.classList.contains("open");
-          document
-            .querySelectorAll(".acc-content")
-            .forEach((c) => c.classList.remove("open"));
-          document
-            .querySelectorAll(".acc-icon")
-            .forEach((i) => (i.textContent = "+"));
+          const isOpen =
+            content.style.maxHeight && content.style.maxHeight !== "0px";
+
+          // 모두 닫기
+          document.querySelectorAll(".acc-content").forEach((c) => {
+            c.style.maxHeight = "0px";
+          });
+          document.querySelectorAll(".acc-icon").forEach((i) => {
+            i.textContent = "+";
+          });
+
+          // 클릭한 항목 토글
           if (!isOpen) {
-            content.classList.add("open");
+            content.style.maxHeight = content.scrollHeight + "px";
             icon.textContent = "−";
           }
         });
