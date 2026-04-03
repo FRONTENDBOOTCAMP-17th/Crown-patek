@@ -915,15 +915,13 @@ Authorization: Bearer {admin_token}
       "totalOrders": 86,
       "totalProducts": 50,
       "totalUsers": 150,
-      "averageOrderValue": 290697
     },
     "recentOrders": [
       {
-        "orderId": "order_001",
+        "orderId": 1,
         "orderNumber": "GM20260331001",
-        "userName": "홍길동",
+        "userId": 1,
         "totalPrice": 290000,
-        "status": "pending",
         "orderDate": "2026-03-31T12:00:00Z"
       }
     ]
@@ -940,7 +938,63 @@ Authorization: Bearer {admin_token}
 
 ## 2. 제품 관리 (Product Management)
 
-### 2.1 제품 추가
+### 2.1 제품 목록 조회
+**Endpoint:** `GET /api/admin/products`
+
+**Query Parameters:**
+- `page` (optional): 페이지 번호 (default: 1)
+- `limit` (optional): 페이지당 항목 수 (default: 10, max: 10)
+- `search` (optional): 검색 키워드 (제품명, productId, 카테고리)
+- `category` (optional): 카테고리 필터 (sunglasses, optical)
+- `inStock` (optional): 재고 유무 필터 (true, false)
+
+**예시:**
+
+```
+GET /api/admin/products?category=sunglasses&page=1&limit=10
+```
+
+**Response:**
+
+```json
+{
+  "success": true,
+  "data": {
+    "products": [
+      {
+        "productId": "1",
+        "name": "GENTLE MONSTER 01",
+        "price": 290000,
+        "category": "sunglasses",
+        "inStock": true,
+        "stock": 10,
+        "images": [
+          "https://example.com/image1.jpg",
+          "https://example.com/image2.jpg"
+        ],
+        "colors": [
+          {
+            "name": "Black",
+            "available": true
+          },
+          {
+            "name": "Tortoise",
+            "available": true
+          }
+        ]
+      }
+    ],
+    "pagination": {
+      "currentPage": 1,
+      "totalPages": 3,
+      "totalItems": 25,
+      "itemsPerPage": 10
+    }
+  }
+}
+```
+
+### 2.2 제품 추가
 
 **Endpoint:** `POST /api/admin/products`
 
@@ -954,7 +1008,10 @@ Authorization: Bearer {admin_token}
   "description": "새로운 디자인의 선글라스",
   "inStock": true,
   "stock": 20,
-  "imageUrl": "https://example.com/new-image.jpg",
+  "images": [
+          "https://example.com/image1.jpg",
+          "https://example.com/image2.jpg"
+        ],
   "colors": [
     {
       "name": "Black",
@@ -988,7 +1045,10 @@ Authorization: Bearer {admin_token}
     "description": "새로운 디자인의 선글라스",
     "inStock": true,
     "stock": 20,
-    "imageUrl": "https://example.com/new-image.jpg",
+    "images": [
+          "https://example.com/image1.jpg",
+          "https://example.com/image2.jpg"
+        ],
     "colors": [
       {
         "name": "Black",
@@ -1026,7 +1086,7 @@ Authorization: Bearer {admin_token}
 
 ---
 
-### 2.2 제품 수정
+### 2.3 제품 수정
 
 **Endpoint:** `PUT /api/admin/products/:productId`
 
@@ -1034,9 +1094,11 @@ Authorization: Bearer {admin_token}
 
 ```json
 {
-  "name": "GENTLE MONSTER 01 (Updated)",
+  "name": "GENTLE MONSTER 01",
   "price": 320000,
   "stock": 15,
+  "category": "optimal",
+  "description": "제품 설명",
   "colors": [
     {
       "name": "Black",
@@ -1047,6 +1109,10 @@ Authorization: Bearer {admin_token}
       "available": true
     }
   ],
+  "images": [
+          "https://example.com/image1.jpg",
+          "https://example.com/image2.jpg"
+        ],
   "specifications": {
     "frameWidth": "140mm",
     "lensHeight": "50mm",
@@ -1092,7 +1158,7 @@ Authorization: Bearer {admin_token}
 
 ---
 
-### 2.3 제품 삭제
+### 2.4 제품 삭제
 
 **Endpoint:** `DELETE /api/admin/products/:productId`
 
@@ -1130,39 +1196,6 @@ DELETE /api/admin/products/prod_001
 
 ---
 
-### 2.4 재고 수정
-
-**Endpoint:** `PATCH /api/admin/products/:productId/stock`
-
-**Request Body:**
-
-```json
-{
-  "stock": 30
-}
-```
-
-**Response:**
-
-```json
-{
-  "success": true,
-  "data": {
-    "productId": "prod_001",
-    "stock": 30,
-    "inStock": true
-  },
-  "message": "재고가 수정되었습니다."
-}
-```
-
-**참고:**
-
-- 재고가 0으로 설정되면 자동으로 `inStock: false`가 됩니다.
-- 재고가 1 이상이면 자동으로 `inStock: true`가 됩니다.
-
----
-
 ## 3. 주문 관리 (Order Management)
 
 ### 3.1 전체 주문 조회
@@ -1197,20 +1230,19 @@ GET /api/admin/orders?status=pending&page=1&limit=20
         "userName": "홍길동",
         "email": "user@example.com",
         "totalPrice": 290000,
-        "status": "pending",
         "orderDate": "2026-03-31T12:00:00Z",
         "itemCount": 2
       }
     ],
     "pagination": {
       "currentPage": 1,
-      "totalPages": 5,
-      "totalItems": 86,
-      "itemsPerPage": 20
+      "totalPages": 3,
+      "totalItems": 25,
+      "itemsPerPage": 10
     },
     "summary": {
       "totalRevenue": 25000000,
-      "totalOrders": 86
+      "totalOrders": 25
     }
   }
 }
@@ -1228,7 +1260,7 @@ GET /api/admin/orders?status=pending&page=1&limit=20
 {
   "success": true,
   "data": {
-    "orderId": "order_001",
+    "orderId": 1,
     "orderNumber": "GM20260331001",
     "userId": "gentle_user",
     "userName": "홍길동",
@@ -1236,11 +1268,13 @@ GET /api/admin/orders?status=pending&page=1&limit=20
     "phone": "010-1234-5678",
     "status": "pending",
     "orderDate": "2026-03-31T12:00:00Z",
+    "trackingNumber": "1234567890",
     "items": [
       {
-        "productId": "prod_001",
+        "productId": 1,
         "name": "GENTLE MONSTER 01",
         "price": 290000,
+        "orderPrice": 290000,
         "quantity": 1,
         "color": "Black"
       }
@@ -1269,7 +1303,7 @@ GET /api/admin/orders?status=pending&page=1&limit=20
 **Query Parameters:**
 
 - `page` (optional): 페이지 번호 (default: 1)
-- `limit` (optional): 페이지당 항목 수 (default: 20)
+- `limit` (optional): 페이지당 항목 수 (default: 10, max: 10)
 - `search` (optional): 검색 키워드 (이름, 이메일, userId)
 
 **예시:**
@@ -1286,22 +1320,20 @@ GET /api/admin/users?search=홍길동&page=1&limit=20
   "data": {
     "users": [
       {
-        "userId": "gentle_user",
+        "userId": 1,
         "email": "user@example.com",
         "firstName": "홍",
         "lastName": "길동",
         "phone": "010-1234-5678",
         "points": 100000,
-        "totalOrders": 5,
-        "totalSpent": 1450000,
         "createdAt": "2026-03-31T10:00:00Z"
       }
     ],
     "pagination": {
       "currentPage": 1,
-      "totalPages": 8,
-      "totalItems": 150,
-      "itemsPerPage": 20
+      "totalPages": 3,
+      "totalItems": 30,
+      "itemsPerPage": 10
     }
   }
 }
@@ -1319,7 +1351,7 @@ GET /api/admin/users?search=홍길동&page=1&limit=20
 {
   "success": true,
   "data": {
-    "userId": "gentle_user",
+    "userId": 1,
     "email": "user@example.com",
     "firstName": "홍",
     "lastName": "길동",
@@ -1328,21 +1360,6 @@ GET /api/admin/users?search=홍길동&page=1&limit=20
     "addressDetail": "456호",
     "points": 100000,
     "createdAt": "2026-03-31T10:00:00Z",
-    "statistics": {
-      "totalOrders": 5,
-      "totalSpent": 1450000,
-      "averageOrderValue": 290000,
-      "lastOrderDate": "2026-03-31T12:00:00Z"
-    },
-    "recentOrders": [
-      {
-        "orderId": "order_001",
-        "orderNumber": "GM20260331001",
-        "totalPrice": 290000,
-        "status": "delivered",
-        "orderDate": "2026-03-31T12:00:00Z"
-      }
-    ]
   }
 }
 ```
@@ -1358,7 +1375,6 @@ GET /api/admin/users?search=홍길동&page=1&limit=20
 ```json
 {
   "points": 150000,
-  "reason": "이벤트 포인트 지급"
 }
 ```
 
@@ -1368,7 +1384,7 @@ GET /api/admin/users?search=홍길동&page=1&limit=20
 {
   "success": true,
   "data": {
-    "userId": "gentle_user",
+    "userId": 1,
     "points": 150000,
     "previousPoints": 100000,
     "updatedAt": "2026-04-02T14:00:00Z"
@@ -1380,7 +1396,6 @@ GET /api/admin/users?search=홍길동&page=1&limit=20
 **참고:**
 
 - 포인트를 직접 설정합니다 (증가/감소가 아님)
-- `reason` 필드는 선택사항이며, 포인트 이력에 기록됩니다.
 
 ---
 
@@ -1404,22 +1419,41 @@ GET /api/admin/users?search=홍길동&page=1&limit=20
 
 ---
 
-## 5. 통계 및 분석
+## 5 이미지 업로드
 
-### 5.1 매출 통계
+### 5.1 이미지 URL 조회
 
-**Endpoint:** `GET /api/admin/analytics/revenue`
+**Endpoint:** `GET /api/admin/images`
 
-**Query Parameters:**
+**Response:**
 
-- `period` (required): 기간 (daily, weekly, monthly, yearly)
-- `startDate` (optional): 시작 날짜 (YYYY-MM-DD)
-- `endDate` (optional): 종료 날짜 (YYYY-MM-DD)
-
-**예시:**
-
+```json
+{
+  "success": true,
+  "data": {
+    "imageId": 1,
+    "title": "젠틀몬스터 썬글라스 정면",
+    "imageURL": "url",
+    "createdAt": "2026-03-31T10:00:00Z",
+  }
+}
 ```
-GET /api/admin/analytics/revenue?period=monthly&startDate=2026-01-01&endDate=2026-03-31
+
+**설명**
+
+- "title"은 이미지 파일의 이름으로 정의합니다.
+- imageURL에는 title에 대한 이미지 URL값이 들어갑니다.
+
+### 5.1 이미지 URL 생성
+
+**Endpoint:** `POST /api/admin/images/:imageId`
+
+**Request Body:**
+
+```json
+{
+  "title": "파일명"
+}
 ```
 
 **Response:**
@@ -1428,28 +1462,12 @@ GET /api/admin/analytics/revenue?period=monthly&startDate=2026-01-01&endDate=202
 {
   "success": true,
   "data": {
-    "period": "monthly",
-    "totalRevenue": 75000000,
-    "totalOrders": 250,
-    "averageOrderValue": 300000,
-    "breakdown": [
-      {
-        "date": "2026-01",
-        "revenue": 20000000,
-        "orders": 70
-      },
-      {
-        "date": "2026-02",
-        "revenue": 25000000,
-        "orders": 80
-      },
-      {
-        "date": "2026-03",
-        "revenue": 30000000,
-        "orders": 100
-      }
-    ]
-  }
+    "imageId": 1,
+    "title": "젠틀몬스터 썬글라스 정면",
+    "imageURL": "url",
+    "createdAt": "2026-03-31T10:00:00Z",
+  },
+  "message": "이미지가 추가되었습니다."
 }
 ```
 
