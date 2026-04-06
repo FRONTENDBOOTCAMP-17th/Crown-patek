@@ -1,76 +1,87 @@
-// 1. 필요한 요소 선택
-const wrapper = document.querySelector(".swiper-wrapper");
-const slides = document.querySelectorAll(".swiper-slide");
+const wrapper = document.querySelector(".swiper");
+const items = document.querySelector(".swiper-wrapper");
+const item = document.querySelectorAll(".swiper-slide");
 const thumbs = document.querySelectorAll(".thumb-item");
 
-let isDown = false;
-let startX;
-let scrollLeft;
 let currentIdx = 0;
+let positions = [];
+let startX = 0;
+let moveX = 0;
+const itemCount = item.length;
 
-// 슬라이드 이동 함수 (index를 받아 해당 위치로 이동)
+function initializeData() {
+  const rect = wrapper.getBoundingClientRect();
+  const paddingLeft = rect.left;
+
+  const itemWidth = item[0].offsetWidth;
+  const gap = 0;
+
+  let pos = [];
+  for (let i = 0; i < itemCount; i++) {
+    const targetPos = -((itemWidth + gap) * i) + paddingLeft;
+    pos.push(targetPos);
+  }
+  positions = pos;
+
+  items.style.transition = "none";
+
+  items.style.transform = `translateX(${positions[currentIdx]}px)`;
+}
+
 function goToSlide(index) {
   if (index < 0) index = 0;
-  if (index >= slides.length) index = slides.length - 1;
+  if (index >= itemCount) index = itemCount - 1;
 
   currentIdx = index;
-  const slideWidth = slides[0].offsetWidth;
+  items.style.transition = "transform 0.6s cubic-bezier(0.23, 1, 0.32, 1)";
+  items.style.transform = `translateX(${positions[currentIdx]}px)`;
 
-  // 이동 애니메이션 적용
-  wrapper.style.transition = "transform 0.5s cubic-bezier(0.25, 1, 0.5, 1)";
-  wrapper.style.transform = `translateX(-${slideWidth * currentIdx}px)`;
-
-  // 아이템 뷰(썸네일) 상태 업데이트
   thumbs.forEach((thumb, i) => {
     if (i === currentIdx) {
-      thumb.classList.add("border-black", "opacity-100");
-      thumb.classList.remove("border-transparent", "opacity-50");
+      thumb.classList.add("opacity-100");
+      thumb.classList.remove("opacity-50");
     } else {
-      thumb.classList.remove("border-black", "opacity-100");
-      thumb.classList.add("border-transparent", "opacity-50");
+      thumb.classList.remove("opacity-100");
+      thumb.classList.add("opacity-50");
     }
   });
 }
 
-// 2. 드래그 이벤트 리스너 등록
-wrapper.addEventListener("mousedown", (e) => {
-  isDown = true;
-  wrapper.style.transition = "none"; // 드래그 중에는 애니메이션 끄기
-  startX = e.pageX - wrapper.offsetLeft;
-  // 현재 적용된 transform 값을 추출
-  const style = window.getComputedStyle(wrapper);
-  const matrix = new WebKitCSSMatrix(style.transform);
-  scrollLeft = matrix.m41;
-});
+wrapper.onmousedown = (e) => {
+  startX = e.clientX;
+  items.style.transition = "none";
 
-wrapper.addEventListener("mouseleave", () => {
-  isDown = false;
-});
-wrapper.addEventListener("mouseup", (e) => {
-  if (!isDown) return;
-  isDown = false;
+  const onMouseMove = (e) => {
+    moveX = e.clientX - startX;
+    const currentLeft = positions[currentIdx] + moveX;
 
-  // 마우스를 뗀 시점에 어느 방향으로 많이 밀었는지 계산해서 슬라이드 확정
-  const endX = e.pageX - wrapper.offsetLeft;
-  const diff = startX - endX;
+    if (
+      (currentIdx === 0 && moveX > 0) ||
+      (currentIdx === itemCount - 1 && moveX < 0)
+    ) {
+      items.style.transform = `translateX(${positions[currentIdx] + moveX * 0.3}px)`;
+    } else {
+      items.style.transform = `translateX(${currentLeft}px)`;
+    }
+  };
 
-  if (Math.abs(diff) > 100) {
-    // 100px 이상 밀었을 때 이동
-    diff > 0 ? goToSlide(currentIdx + 1) : goToSlide(currentIdx - 1);
-  } else {
-    goToSlide(currentIdx); // 조금만 밀었으면 제자리로
-  }
-});
+  document.onmousemove = onMouseMove;
 
-wrapper.addEventListener("mousemove", (e) => {
-  if (!isDown) return;
-  e.preventDefault();
-  const x = e.pageX - wrapper.offsetLeft;
-  const walk = x - startX;
-  wrapper.style.transform = `translateX(${scrollLeft + walk}px)`;
-});
+  document.onmouseup = () => {
+    document.onmousemove = null;
+    document.onmouseup = null;
 
-// 3. 아이템 뷰(썸네일) 클릭 이벤트
+    items.style.transition = "transform 0.6s cubic-bezier(0.23, 1, 0.32, 1)";
+
+    if (Math.abs(moveX) > 70) {
+      moveX > 0 ? goToSlide(currentIdx - 1) : goToSlide(currentIdx + 1);
+    } else {
+      goToSlide(currentIdx);
+    }
+    moveX = 0;
+  };
+};
+
 thumbs.forEach((thumb) => {
   thumb.addEventListener("click", () => {
     const index = parseInt(thumb.getAttribute("data-index"));
@@ -78,5 +89,5 @@ thumbs.forEach((thumb) => {
   });
 });
 
-// 초기 실행
-goToSlide(0);
+window.addEventListener("resize", initializeData);
+window.addEventListener("load", initializeData);
