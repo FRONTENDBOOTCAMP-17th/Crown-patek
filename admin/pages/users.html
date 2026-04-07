@@ -3,10 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>주문 관리</title>
+    <title>유저 관리</title>
     <link rel="stylesheet" href="../../src/components/style.css" />
     <script type="module" src="../../src/main.js"></script>
-    <script type="module" src="./components/order/index.js"></script>
+    <script type="module" src="./components/user/index.js"></script>
   </head>
   <body class="font-gentle bg-(--bg)">
     <!-- 목록 페이지 헤더 -->
@@ -14,14 +14,14 @@
     <header
       class="flex flex-col lg:flex-row lg:justify-between lg:items-center gap-4 p-8"
     >
-      <h1 class="text-[24px] font-bold">주문 관리</h1>
+      <h1 class="text-[24px] font-bold">사용자 관리</h1>
       <div class="flex gap-4 h-11">
         <div class="relative">
           <input
             id="search"
             class="border border-(--admin-border) rounded-lg h-11 w-[256px] pl-10"
             type="text"
-            placeholder="주문 검색..."
+            placeholder="사용자 검색..."
           />
           <svg
             class="absolute -translate-y-1/2 top-1/2 left-1.5"
@@ -55,11 +55,12 @@
       <table class="w-full">
         <thead>
           <tr class="text-[12px] text-(--admin-gray)">
-            <td class="py-5">주문번호</td>
             <td class="py-5">사용자 ID</td>
-            <td class="py-5">수령인</td>
-            <td class="py-5">금액</td>
-            <td class="py-5">주문일시</td>
+            <td class="py-5">이름</td>
+            <td class="py-5">이메일</td>
+            <td class="py-5">전화번호</td>
+            <td class="py-5">포인트</td>
+            <td class="py-5">가입일</td>
             <td class="py-5">작업</td>
           </tr>
         </thead>

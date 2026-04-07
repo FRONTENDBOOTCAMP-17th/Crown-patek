@@ -1,0 +1,54 @@
+import { userApi } from "../../API/user/userListApi.js";
+import { paginationButton } from "../order/paginationButton.js";
+import { calcListNum } from "../order/calcListNum.js";
+import { search } from "../user/search.js";
+import { renderRows } from "../user/renderRows.js";
+
+async function user(page = 1) {
+  try {
+    const data = await userApi(page, 20);
+    console.log(data);
+
+    if (!data || !data.data) {
+      console.error("데이터 없음");
+      return;
+    }
+
+    const tbody = document.querySelector("tbody");
+    if (!tbody) {
+      throw new Error("tbody를 찾을 수 없습니다.");
+    }
+
+    const userSearch = document.getElementById("search");
+    const buttonComponents = document.getElementById("listButtonComponents");
+    const total = document.getElementById("orderListTotal");
+    const range = document.getElementById("orderListNum");
+
+    const users = Array.isArray(data.data.users) ? data.data.users : [];
+    const pagination = data.data.pagination ?? {};
+    const totalPages = pagination.totalPages ?? 1;
+    const totalCount = pagination.totalCount ?? 0;
+    const currentPage = pagination.page ?? page;
+
+    if (buttonComponents) {
+      buttonComponents.innerHTML = "";
+    }
+
+    if (total) {
+      total.textContent = totalCount;
+    }
+
+    renderRows(tbody, users, user);
+
+    paginationButton(buttonComponents, totalPages, currentPage, user);
+    calcListNum(data, range, currentPage);
+
+    search(users, userSearch, (filteredOrders) => {
+      renderRows(tbody, filteredOrders);
+    });
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+user(1);
