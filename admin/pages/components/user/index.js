@@ -1,12 +1,13 @@
-import { orderAPI } from "../../API/order/orderListApi.js";
-import { paginationButton } from "./paginationButton.js";
+import { userApi } from "../../API/user/userListApi.js";
+import { paginationButton } from "../order/paginationButton.js";
 import { calcListNum } from "../common/calcListNum.js";
 import { search } from "../common/search.js";
-import { renderOrderRows } from "./renderOrderRows.js";
+import { renderUserRows } from "./renderUserRows.js";
 
-async function order(page = 1) {
+async function user(page = 1) {
   try {
-    const data = await orderAPI(page);
+    const data = await userApi(page, 20);
+    console.log(data);
 
     if (!data || !data.data) {
       console.error("데이터 없음");
@@ -18,12 +19,12 @@ async function order(page = 1) {
       throw new Error("tbody를 찾을 수 없습니다.");
     }
 
-    const orderSearch = document.getElementById("search");
+    const userSearch = document.getElementById("search");
     const buttonComponents = document.getElementById("listButtonComponents");
     const total = document.getElementById("orderListTotal");
     const range = document.getElementById("orderListNum");
 
-    const orders = Array.isArray(data.data.orders) ? data.data.orders : [];
+    const users = Array.isArray(data.data.users) ? data.data.users : [];
     const pagination = data.data.pagination ?? {};
     const totalPages = pagination.totalPages ?? 1;
     const totalCount = pagination.totalCount ?? 0;
@@ -37,24 +38,25 @@ async function order(page = 1) {
       total.textContent = totalCount;
     }
 
-    renderOrderRows(tbody, orders);
+    renderUserRows(tbody, users, user);
 
-    paginationButton(buttonComponents, totalPages, currentPage, order);
+    paginationButton(buttonComponents, totalPages, currentPage, user);
     calcListNum(data, range, currentPage);
 
-    const onSearch = (filteredOrders) => renderOrderRows(tbody, filteredOrders);
+    const onSearch = (filteredUsers) => renderUserRows(tbody, filteredUsers);
 
     const filterFn = (item, keyword) => {
-      const recipientName = String(item.shippingAddress?.recipientName ?? "").toLowerCase();
-      const orderNumber = String(item.orderNumber ?? "").toLowerCase();
-      return recipientName.includes(keyword) || orderNumber.includes(keyword);
+      const userId = String(item.userId ?? "").toLowerCase();
+      const userName = String(item.firstName + item.lastName ?? "").toLowerCase();
+      const userEmail = String(item.email ?? "").toLowerCase();
+      return userId.includes(keyword) || userEmail.includes(keyword) || userName.includes(keyword);
     };
 
-    search(orders, orderSearch, onSearch, filterFn);
+    search(users, userSearch, onSearch, filterFn);
 
   } catch (error) {
     console.error(error);
   }
 }
 
-order(1);
+user(1);
