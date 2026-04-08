@@ -1,19 +1,30 @@
-const BASE_URL = "https://api.fullstackfamily.com";
-
 export async function logoutAPI() {
-  const token = localStorage.getItem("token");
+  try {
+    const token = localStorage.getItem("token");
 
-  const response = await fetch(`${BASE_URL}/api/gentlelion/v1/auth/logout`, {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
+    if (!token) {
+      console.error("토큰이 없습니다.");
+      return null;
+    }
 
-  if (!response.ok) {
-    throw new Error("로그아웃에 실패했습니다.");
+    const res = await fetch(
+      "https://api.fullstackfamily.com/api/gentlelion/v1/auth/logout",
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+
+    if (!res.ok) {
+      throw new Error("API 요청 실패");
+    }
+
+    localStorage.removeItem("token");
+    window.location.href = "./login.html";
+  } catch (error) {
+    console.error(error);
+    return null;
   }
-
-  localStorage.removeItem("token");
-  window.location.href = "./admin-login.html";
 }

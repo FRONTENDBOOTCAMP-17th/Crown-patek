@@ -1,15 +1,20 @@
-const BASE_URL = "https://api.fullstackfamily.com";
-
 export async function adjustPoint(type, currentUser) {
   const amount = parseInt(document.getElementById("point-input").value);
   if (!amount || amount <= 0) return alert("포인트 금액을 입력해주세요.");
 
-  const points = type === "add" ? amount : -amount;
-  const token = localStorage.getItem("token");
+  const points =
+    type === "add" ? currentUser.points + amount : currentUser.points - amount;
 
   try {
-    const response = await fetch(
-      `${BASE_URL}/api/gentlelion/v1/admin/users/${currentUser.userId}/points`,
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      console.error("토큰이 없습니다.");
+      return null;
+    }
+
+    const res = await fetch(
+      `https://api.fullstackfamily.com/api/gentlelion/v1/admin/users/${currentUser.userId}/points`,
       {
         method: "PATCH",
         headers: {
@@ -20,17 +25,18 @@ export async function adjustPoint(type, currentUser) {
       },
     );
 
-    if (!response.ok) {
-      throw new Error("포인트 변경에 실패했습니다.");
+    if (!res.ok) {
+      throw new Error("API 요청 실패");
     }
 
-    const data = await response.json();
+    const data = await res.json();
     currentUser.points = data.data.points;
 
     document.getElementById("user-points").textContent =
       currentUser.points.toLocaleString() + "P";
     document.getElementById("point-input").value = "";
   } catch (error) {
-    alert(error.message);
+    console.error(error);
+    return null;
   }
 }

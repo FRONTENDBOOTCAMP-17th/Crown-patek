@@ -1,6 +1,5 @@
 import { render } from "./render.js";
 import { adjustPoint } from "./adjustPoint.js";
-import { closeModal } from "./closeModal.js";
 import { userDetailAPI } from "../../API/user/userDetailApi.js";
 
 const id = new URLSearchParams(window.location.search).get("userId");
@@ -17,7 +16,6 @@ async function init() {
     render(data);
 
     window.adjustPoint = (type) => adjustPoint(type, data);
-    window.closeModal = closeModal;
   } catch (error) {
     console.error(error);
   }

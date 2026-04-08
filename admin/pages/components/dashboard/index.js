@@ -6,7 +6,7 @@ import { logoutAPI } from "../../API/login/logoutApi.js";
 window.toggleMenu = toggleMenu;
 window.logout = logoutAPI;
 
-async function init() {
+async function dashboard() {
   try {
     const data = await dashboardAPI();
 
@@ -22,4 +22,4 @@ async function init() {
   }
 }
 
-init();
+dashboard();

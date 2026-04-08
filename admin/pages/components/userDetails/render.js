@@ -1,13 +1,4 @@
-export function formatDate(iso) {
-  return new Date(iso).toLocaleString("ko-KR", {
-    year: "numeric",
-    month: "numeric",
-    day: "numeric",
-    hour: "numeric",
-    minute: "numeric",
-    second: "numeric",
-  });
-}
+import { formatDate } from "../dashboard/formatters.js";
 
 export function render(user) {
   document.getElementById("user-id").textContent = user.userId;

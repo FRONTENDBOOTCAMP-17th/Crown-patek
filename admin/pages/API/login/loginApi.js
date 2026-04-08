@@ -1,21 +1,25 @@
-const BASE_URL = "https://api.fullstackfamily.com";
-
 export async function loginAPI(email, password) {
-  const response = await fetch(`${BASE_URL}/api/gentlelion/v1/auth/login`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ email, password }),
-  });
+  try {
+    const res = await fetch(
+      "https://api.fullstackfamily.com/api/gentlelion/v1/auth/login",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      },
+    );
 
-  if (!response.ok) {
-    throw new Error("이메일 또는 비밀번호가 일치하지 않습니다.");
+    if (!res.ok) {
+      throw new Error("API 요청 실패");
+    }
+
+    const data = await res.json();
+    localStorage.setItem("token", data.token);
+    return data;
+  } catch (error) {
+    console.error(error);
+    return null;
   }
-
-  const data = await response.json();
-
-  localStorage.setItem("token", data.token);
-
-  return data;
 }
