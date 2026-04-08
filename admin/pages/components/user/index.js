@@ -1,6 +1,6 @@
 import { userApi } from "../../API/user/userListApi.js";
 import { paginationButton } from "../order/paginationButton.js";
-import { calcListNum } from "../order/calcListNum.js";
+import { calcListNum } from "../common/calcListNum.js";
 import { search } from "../common/search.js";
 import { renderUserRows } from "./renderUserRows.js";
 

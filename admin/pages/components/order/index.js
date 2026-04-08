@@ -1,6 +1,6 @@
 import { orderAPI } from "../../API/order/orderListApi.js";
 import { paginationButton } from "./paginationButton.js";
-import { calcListNum } from "./calcListNum.js";
+import { calcListNum } from "../common/calcListNum.js";
 import { search } from "../common/search.js";
 import { renderOrderRows } from "./renderOrderRows.js";
 
