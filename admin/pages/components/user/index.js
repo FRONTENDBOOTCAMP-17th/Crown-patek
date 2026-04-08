@@ -47,7 +47,7 @@ async function user(page = 1) {
 
     const filterFn = (item, keyword) => {
       const userId = String(item.userId ?? "").toLowerCase();
-      const userName = String(item.firstName + item.lastName ?? "").toLowerCase();
+      const userName = String((item.firstName ?? "") + (item.lastName ?? "")).toLowerCase();
       const userEmail = String(item.email ?? "").toLowerCase();
       return userId.includes(keyword) || userEmail.includes(keyword) || userName.includes(keyword);
     };
