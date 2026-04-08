@@ -2,7 +2,7 @@ import { userApi } from "../../API/user/userListApi.js";
 import { paginationButton } from "../order/paginationButton.js";
 import { calcListNum } from "../order/calcListNum.js";
 import { search } from "../user/search.js";
-import { renderRows } from "../user/renderRows.js";
+import { renderUserRows } from "./renderUserRows.js";
 
 async function user(page = 1) {
   try {
@@ -38,13 +38,13 @@ async function user(page = 1) {
       total.textContent = totalCount;
     }
 
-    renderRows(tbody, users, user);
+    renderUserRows(tbody, users, user);
 
     paginationButton(buttonComponents, totalPages, currentPage, user);
     calcListNum(data, range, currentPage);
 
     search(users, userSearch, (filteredOrders) => {
-      renderRows(tbody, filteredOrders);
+      renderUserRows(tbody, filteredOrders);
     });
   } catch (error) {
     console.error(error);

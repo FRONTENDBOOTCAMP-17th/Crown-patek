@@ -2,9 +2,9 @@ import { orderAPI } from "../../API/order/orderListApi.js";
 import { paginationButton } from "./paginationButton.js";
 import { calcListNum } from "./calcListNum.js";
 import { search } from "./search.js";
-import { renderRows } from "./renderRows.js";
+import { renderOrderRows } from "./renderOrderRows.js";
 
-async function renderOrderList(page = 1) {
+async function order(page = 1) {
   try {
     const data = await orderAPI(page);
 
@@ -37,17 +37,17 @@ async function renderOrderList(page = 1) {
       total.textContent = totalCount;
     }
 
-    renderRows(tbody, orders);
+    renderOrderRows(tbody, orders);
 
-    paginationButton(buttonComponents, totalPages, currentPage, renderOrderList);
+    paginationButton(buttonComponents, totalPages, currentPage, order);
     calcListNum(data, range, currentPage);
 
     search(orders, orderSearch, (filteredOrders) => {
-      renderRows(tbody, filteredOrders);
+      renderOrderRows(tbody, filteredOrders);
     });
   } catch (error) {
     console.error(error);
   }
 }
 
-renderOrderList(1);
+order(1);
