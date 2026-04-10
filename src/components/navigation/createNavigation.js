@@ -7,13 +7,20 @@ export function createNavigation(categories) {
     const ul = document.createElement("ul");
     ul.className = "flex gap-2.5 overflow-x-auto whitespace-nowrap text-[8.9px]";
 
+    const currentPath = window.location.pathname;
+
     categories.forEach((category, index) => {
         const li = document.createElement("li");
 
         const a = document.createElement("a");
-        a.href = "#";
+        a.href = category.href ?? "#";
+
+        const isActive = category.href
+            ? currentPath.includes(category.href)
+            : index === 0;
+
         a.className = `navigation-button cursor-pointer flex items-center rounded-[20px] py-2 px-3.25 border border-(--subTitle-button) ${
-            index === 0 ? "bg-(--subTitle-button)" : "bg-white"
+            isActive ? "bg-(--subTitle-button)" : "bg-white"
         }`;
 
         const span = document.createElement("span");
