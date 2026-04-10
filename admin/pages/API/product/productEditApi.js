@@ -1,6 +1,6 @@
 export async function editProduct(id, productData) {
   const API_URL = `https://api.fullstackfamily.com/api/gentlelion/v1/admin/products/${id}`;
-  const TOKEN = localStorage.getItem("admin_token");
+  const TOKEN = localStorage.getItem("token");
 
   try {
     const response = await fetch(API_URL, {

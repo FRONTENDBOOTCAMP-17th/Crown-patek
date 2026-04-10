@@ -1,6 +1,8 @@
 import { getProductList } from "../../API/product/productListApi.js";
 import { renderRows } from "./renderRows.js";
 import { deleteProduct } from "../../API/product/productDelete.js";
+import { loadSidebar } from "../aside/dashboardNavigation.js";
+import { toggleMenu } from "../common/toggleMenu.js";
 
 async function refreshProductList() {
   try {
@@ -53,7 +55,8 @@ async function ProductPage() {
     });
   }
   deleteEvent();
-
+  toggleMenu();
+  loadSidebar();
   await refreshProductList();
 }
 

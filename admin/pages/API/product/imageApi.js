@@ -1,7 +1,7 @@
 export async function uploadImage(file) {
   const API_URL =
     "https://api.fullstackfamily.com/api/gentlelion/v1/admin/images";
-  const TOKEN = localStorage.getItem("admin_token");
+  const TOKEN = localStorage.getItem("token");
 
   const formData = new FormData();
   formData.append("file", file);
