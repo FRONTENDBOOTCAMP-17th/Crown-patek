@@ -1,14 +1,21 @@
 import { postWishlist } from "../API/wishlist/postWishlistApi";
+import { changeSVG } from "../wishlist/changeSVG";
 
 export async function wishbuttonEvent(token) {
     const buttons = document.querySelectorAll(".wishButton");
 
     buttons.forEach((button) => {
+        button.addEventListener("click", async () => {
+            const productId = Number(button.dataset.productId);
+            const isWishlisted = button.dataset.wishlist === "1";
 
-        button.addEventListener("click", () => {
-            const productId = button.dataset.productId;
-            console.log("클릭된 상품 ID:", productId);
-            postWishlist(token, productId);
+            if (!isWishlisted) {
+                const result = await postWishlist(token, productId);
+                if (result) {
+                    button.dataset.wishlist = "1";
+                    changeSVG(button, true);
+                }
+            }
         });
     });
 }

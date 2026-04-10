@@ -1,10 +1,10 @@
 import { getWishlist } from "../API/wishlist/wishlistApi";
-import { postWishlist } from "../API/wishlist/postWishlistApi";
+import { getToken } from "../API/token/getToken";
+import { wishbuttonEvent } from "../productCard/wishbuttonEvent";
+import { changeBtnState } from "./changeBtnState";
 
-export async function wishlist(productId, color) {
-    const token = localStorage.getItem("token");
-    const data = await getWishlist(token);
-    const post = await postWishlist(token, productId, color)
-    
-    console.log(data);
+export async function wishlist() {
+    const data = await getWishlist(getToken());
+    wishbuttonEvent(getToken());
+    changeBtnState(data);
 }

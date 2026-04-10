@@ -1,5 +1,6 @@
 import { getProductList } from "../API/product/productListApi.js";
 import { productCard } from "../productCard/productCard.js";
+import { wishlist } from "../wishlist/index.js";
 
 export async function buttonEvent(category, page, button) {
   const productContainer = document.getElementById("productContainer");
@@ -15,4 +16,5 @@ export async function buttonEvent(category, page, button) {
   if (page >= result.meta.totalPages) {
     button.style.display = "none";
   }
+  wishlist();
 }
