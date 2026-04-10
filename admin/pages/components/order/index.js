@@ -3,6 +3,8 @@ import { paginationButton } from "./paginationButton.js";
 import { calcListNum } from "../common/calcListNum.js";
 import { search } from "../common/search.js";
 import { renderOrderRows } from "./renderOrderRows.js";
+import { loadSidebar } from "../aside/dashboardNavigation.js"
+import { toggleMenu } from "../common/toggleMenu.js";
 
 async function order(page = 1) {
   try {
@@ -50,6 +52,8 @@ async function order(page = 1) {
       return recipientName.includes(keyword) || orderNumber.includes(keyword);
     };
 
+    loadSidebar();
+    toggleMenu();
     search(orders, orderSearch, onSearch, filterFn);
 
   } catch (error) {

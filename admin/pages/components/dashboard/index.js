@@ -1,9 +1,9 @@
-import { toggleMenu, initToggleMenu } from "./toggleMenu.js";
+import { toggleMenu } from "../common/toggleMenu.js";
 import { dashboardAPI } from "../../API/dashboard/dashboardApi.js";
 import { logoutAPI } from "../../API/login/logoutApi.js";
 import { renderDashboardRows } from "./renderDashboardRows.js";
+import { loadSidebar } from "../aside/dashboardNavigation.js"
 
-window.toggleMenu = toggleMenu;
 window.logout = logoutAPI;
 
 async function dashboard() {
@@ -22,8 +22,7 @@ async function dashboard() {
     document.getElementById("stat-orders").textContent = summary.totalOrders;
     document.getElementById("stat-revenue").textContent = summary.totalRevenue.toLocaleString() + "원";
 
-    console.log(data.recentOrders)
-    const orders = Array.isArray(data.recentOrders) ? data.recentOrders : [];
+    const orders = Array.isArray(recentOrders) ? recentOrders : [];
 
     const tbody = document.querySelector("tbody");
     if (!tbody) {
@@ -31,9 +30,8 @@ async function dashboard() {
     }
 
     renderDashboardRows(tbody, orders);
-    console.log("렌더링 후 tbody 행 수:", tbody.rows.length); // ✅ 몇 개 추가됐는지 확인
-
-    initToggleMenu();
+    loadSidebar()
+    toggleMenu();
   } catch (error) {
     console.error(error);
   }

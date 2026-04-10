@@ -3,6 +3,7 @@ import { paginationButton } from "../order/paginationButton.js";
 import { calcListNum } from "../common/calcListNum.js";
 import { search } from "../common/search.js";
 import { renderUserRows } from "./renderUserRows.js";
+import { loadSidebar } from "../aside/dashboardNavigation.js"
 
 async function user(page = 1) {
   try {
@@ -52,6 +53,7 @@ async function user(page = 1) {
       return userId.includes(keyword) || userEmail.includes(keyword) || userName.includes(keyword);
     };
 
+    loadSidebar();
     search(users, userSearch, onSearch, filterFn);
 
   } catch (error) {

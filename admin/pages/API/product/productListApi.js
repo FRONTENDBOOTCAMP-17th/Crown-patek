@@ -1,6 +1,6 @@
 export async function getProductList(page = 1, limit = 20) {
   const API_URL = `https://api.fullstackfamily.com/api/gentlelion/v1/admin/products?page=${page}&limit=${limit}`;
-  const TOKEN = localStorage.getItem("admin_token");
+  const TOKEN = localStorage.getItem("token");
 
   try {
     const response = await fetch(API_URL, {

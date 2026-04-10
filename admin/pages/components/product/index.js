@@ -1,6 +1,8 @@
 import { getProductList } from "../../API/product/productListApi.js";
 import { renderRows } from "./renderRows.js";
 import { deleteProduct } from "../../API/product/productDelete.js";
+import { loadSidebar } from "../aside/dashboardNavigation.js";
+import { toggleMenu } from "../common/toggleMenu.js";
 import { paginationButton } from "./pagination.js";
 import { calcListNum } from "../common/calcListNum.js";
 import { search } from "../common/search.js";
@@ -105,8 +107,10 @@ function init() {
       location.href = "productsAdd.html";
     });
   }
-
   deleteEvent();
+  toggleMenu();
+  loadSidebar();
+  await refreshProductList();
   ProductPage(1);
 }
 
