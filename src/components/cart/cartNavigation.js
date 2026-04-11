@@ -1,3 +1,5 @@
+import { cartAccordion } from "./cartAccordion";
+
 export async function cartNavigation(container, totalPrice) {
     const response = await fetch('/src/components/cart/cartNavigation.html');
     if (!response.ok) return;
@@ -22,6 +24,8 @@ export async function cartNavigation(container, totalPrice) {
     }, { threshold: 0.1 });
 
     observer.observe(summary);
+
+    cartAccordion(nav);
 
     container.appendChild(nav);
 }
