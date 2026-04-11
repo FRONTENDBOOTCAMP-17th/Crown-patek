@@ -1,6 +1,7 @@
 import { delCartlist } from "../API/cart/delcartApi";
 import { putCartApi } from "../API/cart/putCartApi";
 import { emptyCart } from "./emptyCart.js";
+import { cartNavigation } from "./cartNavigation.js";
 
 export async function cartCard(token, productContainer, navContainer, data) {
     const response = await fetch('/src/components/cart/cartCard.html');
@@ -26,8 +27,10 @@ export async function cartCard(token, productContainer, navContainer, data) {
         const select = card.querySelector(".cart-quantity");
         if (select) {
             select.value = product.quantity ?? 1;
-            select.addEventListener("change", (e) => {
-                putCartApi(token, product.cartItemId, e.target.value);
+            select.addEventListener("change", async(e) => {
+                const updateData = await putCartApi(token, product.cartItemId, e.target.value);
+                navContainer.innerHTML = "";
+                await cartNavigation(navContainer, updateData.data.totalPrice);
             });
         }
 
