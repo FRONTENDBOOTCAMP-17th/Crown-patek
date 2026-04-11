@@ -5,8 +5,7 @@ import { cartCard } from "./cartCard.js";
 async function handlerCart(){
     const productContainer = document.getElementById("productContainer");
     const data = await getCartListApi(getToken());
+    await cartCard(getToken(), productContainer, data);
     console.log(data);
-    // layout(data);
-    await cartCard(productContainer, data);
 }
 handlerCart();
