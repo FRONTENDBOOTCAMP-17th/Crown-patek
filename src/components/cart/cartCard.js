@@ -2,7 +2,7 @@ import { delCartlist } from "../API/cart/delcartApi";
 import { putCartApi } from "../API/cart/putCartApi";
 import { emptyCart } from "./emptyCart.js";
 
-export async function cartCard(token, container, data) {
+export async function cartCard(token, productContainer, navContainer, data) {
     const response = await fetch('/src/components/cart/cartCard.html');
     if (!response.ok) return;
 
@@ -37,14 +37,15 @@ export async function cartCard(token, container, data) {
                 await delCartlist(token, product.cartItemId);
                 card.remove();
                 
-                const remaining = container.querySelectorAll(".cart-product-name").length;
+                const remaining = productContainer.querySelectorAll(".cart-product-name").length;
                 if (remaining === 0) {
-                    container.innerHTML = '';
-                    await emptyCart(container);
+                    productContainer.innerHTML = '';
+                    navContainer.innerHTML = '';
+                    await emptyCart(productContainer);
                 }
             });
         }
 
-        container.appendChild(card);
+        productContainer.appendChild(card);
     }
 }
