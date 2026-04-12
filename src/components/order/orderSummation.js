@@ -9,8 +9,6 @@ export function orderSummation() {
         const container = containers[index];
         if (!container) return;
 
-        console.log(container);
-
         container.style.maxHeight = "0px";
         container.style.overflow = "hidden";
         container.style.transition = "max-height 0.3s ease";
