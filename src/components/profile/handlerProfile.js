@@ -10,6 +10,8 @@ import { editProfile } from "./editProfile";
 import { editAddress } from "./editAdress";
 import { withdrawInput } from "./withdrawInput";
 import { initAddressSearch } from "../login/addressSearch";
+import { formatPhoneNumber } from "../login/formatPhoneNumber";
+import { checkKoreanName } from "../login/checkKoreanName";
 
 async function handlerProfile() {
     const data = await getProfileApi(getToken())
@@ -23,5 +25,16 @@ async function handlerProfile() {
     editAddress(data);
     withdrawInput();
     initAddressSearch();
+    formatPhoneNumber();
+
+    ["editFn", "editLn"].forEach((id) => {
+        document.getElementById(id).addEventListener("input", () => {
+            const isValid = checkKoreanName(id);
+            const errorEl = document.getElementById("editNameError");
+            if (errorEl) {
+                errorEl.classList.toggle("hidden", isValid);
+            }
+        });
+    });
 }
 handlerProfile();
