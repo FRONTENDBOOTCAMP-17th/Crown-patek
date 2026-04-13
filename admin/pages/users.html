@@ -111,22 +111,31 @@
       </div>
     </header>
 
-    <main class="p-8">
+    <main class="px-8">
       <!-- 주문 관리 테이블 -->
-      <table class="w-full">
-        <thead>
-          <tr class="text-[12px] text-(--admin-gray)">
-            <th class="py-5">사용자 ID</th>
-            <th class="py-5">이름</th>
-            <th class="py-5">이메일</th>
-            <th class="py-5">전화번호</th>
-            <th class="py-5">포인트</th>
-            <th class="py-5">가입일</th>
-            <th class="py-5">작업</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
+      <div
+        class="bg-white border border-[#e4e7ec] rounded-xl overflow-hidden shadow-sm"
+      >
+        <div class="overflow-x-auto">
+          <table class="w-full text-left">
+            <thead class="bg-gray-50 border-b border-[#e4e7ec]">
+              <tr class="text-[12px] text-[#667085] uppercase tracking-wider">
+                <th class="px-6 py-4 font-medium">사용자 ID</th>
+                <th class="px-6 py-4 font-medium">이름</th>
+                <th class="px-6 py-4 font-medium">이메일</th>
+                <th class="px-6 py-4 font-medium">전화번호</th>
+                <th class="px-6 py-4 font-medium">포인트</th>
+                <th class="px-6 py-4 font-medium">가입일</th>
+                <th class="px-6 py-4 font-medium text-right">작업</th>
+              </tr>
+            </thead>
+            <tbody
+              id="productTableBody"
+              class="divide-y divide-[#e4e7ec]"
+            ></tbody>
+          </table>
+        </div>
+      </div>
 
       <!-- 페이지 번호 및 텍스트 -->
       <div class="flex flex-col text-center gap-4">
