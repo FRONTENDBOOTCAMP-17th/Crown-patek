@@ -1,9 +1,8 @@
 import { getOrderApi } from "../API/order/getOrderApi";
+import { loadOrderDetail } from "./loadOrderDetail";
 
 export async function loadRecent(token) {
     const data = await getOrderApi(token);
-
-    console.log(data);
 
     const container = document.querySelector(".order-section-card");
     const emptyEl = document.querySelector(".order-no");
@@ -32,6 +31,11 @@ export async function loadRecent(token) {
         card.querySelector(".order-status").textContent = statusMap[order.status] ?? order.status;
         card.querySelector(".order-price").textContent = "₩" + order.totalPrice.toLocaleString();
         card.querySelector(".order-date").textContent = order.orderDate.split("T")[0];
+        card.dataset.orderId = order.orderId;
+
+        card.addEventListener("click", () => {
+            loadOrderDetail(token, card.dataset.orderId);
+        })
 
         container.appendChild(card);
     });
