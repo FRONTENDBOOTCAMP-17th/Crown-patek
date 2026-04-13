@@ -1,3 +1,5 @@
+import { logoutAPI } from "../../API/login/logoutApi.js";
+
 export async function loadSidebar() {
   const aside = document.querySelector("aside");
   if (!aside) return;
@@ -6,8 +8,10 @@ export async function loadSidebar() {
   const html = await response.text();
   aside.innerHTML = html;
 
-  const currentPath = window.location.pathname;
+  const logoutBtn = aside.querySelector("#logoutBtn");
+  if (logoutBtn) logoutBtn.addEventListener("click", logoutAPI);
 
+  const currentPath = window.location.pathname;
   let activeNav = "";
   if (currentPath.includes("dashboard")) activeNav = "dashboard";
   else if (currentPath.includes("users")) activeNav = "users";
@@ -18,7 +22,6 @@ export async function loadSidebar() {
   if (activeLink) {
     activeLink.classList.remove("hover:bg-gray-50");
     activeLink.classList.add("bg-[#0a0a0a]");
-
     activeLink.querySelectorAll("svg, span").forEach((el) => {
       el.classList.add("text-white");
       el.classList.remove("text-(--admin-gray)");
