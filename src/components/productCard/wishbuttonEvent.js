@@ -1,31 +1,33 @@
-import { postWishlist } from "../API/wishlist/postWishlistApi";
-import { delWishlist } from "../API/wishlist/delWishlistApi";
-import { changeSVG } from "../wishlist/changeSVG";
+import { postWishlist } from "../API/wishlist/postWishlistApi.js";
+import { delWishlist } from "../API/wishlist/delWishlistApi.js";
+import { changeSVG } from "../wishlist/changeSVG.js";
 
-export async function wishbuttonEvent(token, data) {
-    const buttons = document.querySelectorAll(".wishButton");
+export async function wishbuttonEvent(data) {
+  const buttons = document.querySelectorAll(".wishButton");
 
-    buttons.forEach((button) => {
-        button.addEventListener("click", async () => {
-            const productId = Number(button.dataset.productId);
-            const isWishlisted = button.dataset.wishlist === "1";
+  buttons.forEach((button) => {
+    button.addEventListener("click", async () => {
+      const productId = Number(button.dataset.productId);
+      const isWishlisted = button.dataset.wishlist === "1";
 
-            if (!isWishlisted) {
-                const result = await postWishlist(token, productId);
-                if (result) {
-                    button.dataset.wishlist = "1";
-                    changeSVG(button, true);
-                }
-            } else {
-                const item = data.data.items.find(item => item.productId === productId);
-                const wishlistItemId = item?.wishlistItemId;
+      if (!isWishlisted) {
+        const result = await postWishlist(productId);
+        if (result) {
+          button.dataset.wishlist = "1";
+          changeSVG(button, true);
+        }
+      } else {
+        const item = data.data.items.find(
+          (item) => item.productId === productId,
+        );
+        const wishlistItemId = item?.wishlistItemId;
 
-                const result = await delWishlist(token, wishlistItemId);
-                if (result) {
-                    button.dataset.wishlist = "0";
-                    changeSVG(button, false);
-                }
-            }
-        });
+        const result = await delWishlist(wishlistItemId);
+        if (result) {
+          button.dataset.wishlist = "0";
+          changeSVG(button, false);
+        }
+      }
     });
+  });
 }
