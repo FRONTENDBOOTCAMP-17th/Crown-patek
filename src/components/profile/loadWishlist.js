@@ -5,7 +5,6 @@ import { changeSVG } from "../wishlist/changeSVG";
 
 export async function loadWishlist(token) {
     const products = await getWishlist(token);
-    console.log("product", products);
 
     const wishLength = document.getElementById("wishLength");
     wishLength.textContent = products.data.itemCount;

@@ -4,11 +4,13 @@ import { loadProfile } from "./loadProfile";
 import { loadWishlist } from "./loadWishlist";
 import { goToIndex } from "./goToIndex";
 import { changeLayout } from "./changeLayout";
+import { loadRecent } from "./loadRecent";
 
 async function handlerProfile() {
     const data = await getProfileApi(getToken())
     loadProfile(data);
     loadWishlist(getToken());
+    loadRecent(getToken());
     goToIndex();
     changeLayout();
 }

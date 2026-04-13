@@ -155,7 +155,7 @@
         </div>
       </div>
       <div
-        class="wishlist-section  hidden flex flex-col justify-center items-center mt-15"
+        class="wishlist-section hidden flex flex-col justify-center items-center mt-15"
       >
         <h2 class="font-bold">
           위시리스트<span id="wishLength" class="text-[10px] align-super"
@@ -167,16 +167,18 @@
           class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 justify-between"
         ></div>
       </div>
-      <div class="order-section hidden flex-1 flex flex-col">
+      <div class="order-section hidden flex-1 flex flex-col items-center">
         <h2 class="mt-15 font-bold text-center">최근 구매 내역</h2>
         <div
-          class="order-no flex-1 flex flex-col items-center justify-center text-[11px] font-bold"
+          class="order-no flex-1 flex flex-col items-center justify-center text-[11px] font-bold hidden"
         >
           <p>아직 제품을 구매한 내역이 없습니다.</p>
           <p>쇼핑을 계속하거나 오프라인 구매 내역을 추가하세요.</p>
           <button id="goIndexBtn" class="cursor-pointer mt-8 w-80 border border-(--border) text-center py-4 rounded-lg">
             쇼핑 계속하기
           </button>
+        </div>
+        <div class="order-section-card flex flex-col w-100 md:w-200">
         </div>
       </div>
     </main>
