@@ -1,6 +1,6 @@
 import { putProfileApi } from "../API/profile/putProfileApi.js";
 
-export async function editSaveButton() {
+export async function editProfileSaveButton() {
   const firstName = document.getElementById("editFn").value.trim();
   const lastName = document.getElementById("editLn").value.trim();
   const email = document.getElementById("editEmail").value.trim();

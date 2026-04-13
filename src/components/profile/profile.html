@@ -171,42 +171,106 @@
               class="flex justify-between items-start w-full max-w-162 mt-10 pb-5 border-b border-[#e5e7eb]"
             >
               <div class="flex flex-col gap-1">
-                <p class="text-[15px]">홍길동</p>
-                <p class="text-[13px]">
-                  멋쟁이 사자처럼 프론트엔드 부트캠프 화이팅!
-                </p>
-                <span class="text-[13px]">010 1111 1111</span>
+                <p id="address" class="text-[13px]">주소</p>
+                <span id="addressDetail" class="text-[13px]">상세주소</span>
               </div>
-
-              <div class="flex gap-2 ml-4 shrink-0">
+            </div>
+            <div
+              id="addressEditForm"
+              class="hidden w-full max-w-162 flex flex-col gap-3 mt-4 mb-2 p-5 border border-[#e5e7eb] rounded-xl bg-[#fafafa]"
+            >
+              <div class="flex flex-col gap-1">
+                <label class="text-[11px] text-[#858585]">주소</label>
+                <div class="flex gap-2">
+                  <input
+                    id="editAdress"
+                    type="text"
+                    placeholder="주소"
+                    class="w-1/2 border border-[#d1d5db] rounded-lg px-3 py-2 text-[13px] outline-none focus:border-[#111] transition"
+                  />
+                  <input
+                    id="editAdressDetail"
+                    type="text"
+                    placeholder="상세주소"
+                    class="w-1/2 border border-[#d1d5db] rounded-lg px-3 py-2 text-[13px] outline-none focus:border-[#111] transition"
+                  />
+                </div>
+              </div>
+              <div class="flex gap-2 mt-1">
                 <button
-                  class="bg-[#e5e7eb] cursor-pointer px-4 py-2 text-[12px] rounded-md"
+                  id="addressSaveBtn"
+                  class="cursor-pointer flex-1 bg-[#111] text-white rounded-lg py-2.5 text-[12px] font-medium"
                 >
-                  삭제하기
+                  저장하기
                 </button>
                 <button
-                  class="bg-[#e5e7eb] cursor-pointer px-4 py-2 text-[12px] rounded-md"
+                  id="addressCancelBtn"
+                  class="cursor-pointer flex-1 border border-[#d1d5db] rounded-lg py-2.5 text-[12px] text-[#555]"
                 >
-                  편집하기
+                  취소
                 </button>
               </div>
             </div>
 
             <button
+              id="addressEditBtn"
               class="cursor-pointer flex items-center justify-center w-full max-w-162 rounded-lg border border-[#ababab] mt-1 px-6 py-3 text-center text-[12px] leading-5 text-[#111]"
             >
-              새로운 주소 추가하기
+              편집하기
+            </button>
+
+            <button
+              class="withdraw-btn bg-(--red) cursor-pointer hidden md:flex items-center justify-center w-full max-w-162 rounded-lg border border-[#ababab] mt-20 px-6 py-3 text-center text-[12px] leading-5 text-white"
+            >
+              계정탈퇴
             </button>
           </div>
           <div
-            class="w-full flex flex-col items-center justify-center max-md:px-6 px-15"
+            class="w-full flex flex-col md:hidden items-center justify-center max-md:px-6 px-15 mt-20"
           >
             <button
               class="logout-btn cursor-pointer md:hidden flex items-center justify-center w-full max-w-162 rounded-lg border border-[#ababab] mt-1 px-6 py-3 text-center text-[12px] leading-5 text-[#111]"
             >
               로그아웃
             </button>
+            <button
+              class="withdraw-btn bg-(--red) cursor-pointer md:hidden flex items-center justify-center w-full max-w-162 rounded-lg border border-[#ababab] mt-1 px-6 py-3 text-center text-[12px] leading-5 text-white"
+            >
+              계정탈퇴
+            </button>
           </div>
+
+          <div
+              id="withdrawForm"
+              class="w-full max-w-162 hidden flex flex-col gap-3 mt-2 mb-2 p-5 border border-[#e5e7eb] rounded-xl bg-[#fafafa]"
+            >
+              <div class="flex flex-col gap-1">
+                <p class="text-[14px] font-bold mb-2">계정탈퇴를 하시려면 비밀번호를 입력해주세요.</p>
+                <label class="text-[11px] text-[#858585]">비밀번호</label>
+                <div class="flex gap-2">
+                  <input
+                    id="withdrawPassword"
+                    type="password"
+                    placeholder="비밀번호*"
+                    class="w-full border border-[#d1d5db] rounded-lg px-3 py-2 text-[13px] outline-none focus:border-[#111] transition"
+                  />
+                </div>
+              </div>
+              <div class="flex gap-2 mt-1">
+                <button
+                  id="withdrawSaveBtn"
+                  class="cursor-pointer flex-1 bg-[#111] text-white rounded-lg py-2.5 text-[12px] font-medium"
+                >
+                  확인
+                </button>
+                <button
+                  id="withdrawCancelBtn"
+                  class="cursor-pointer flex-1 border border-[#d1d5db] rounded-lg py-2.5 text-[12px] text-[#555]"
+                >
+                  취소
+                </button>
+              </div>
+            </div>
         </div>
       </div>
       <div
