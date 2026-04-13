@@ -1,4 +1,4 @@
-import { editSaveButton } from "./editSaveButton";
+import { editProfileSaveButton } from "./editProfileSaveButton";
 
 export function editProfile() {
     const editBtn = document.getElementById("profileEditBtn");
@@ -31,7 +31,7 @@ export function editProfile() {
 
         editForm.classList.add("hidden");
         editBtn.textContent = "프로필 편집하기";
-        await editSaveButton();
+        await editProfileSaveButton();
     });
 
     cancelBtn.addEventListener("click", () => {
