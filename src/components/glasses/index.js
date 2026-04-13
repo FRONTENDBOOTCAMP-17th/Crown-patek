@@ -5,8 +5,8 @@ import { navigation } from "../navigation/index.js";
 
 async function glasses() {
   navigation();
-  const products = await getProductList("glasses", 24, 1);
-  await layout(products, "glasses");
+  const products = await getProductList("optical", 24, 1);
+  await layout(products, "optical");
   wishlist();
 }
 
