@@ -4,6 +4,7 @@ import { orderNavigation } from "./orderNavigation.js";
 import { orderSummation } from "./orderSummation.js";
 import { orderButton } from "./orderButton.js";
 import { getProfileApi } from "../API/profile/getProfileApi.js";
+import { initCheckoutValidation } from "./initCheckoutValidation.js";
 
 async function handlerOrder() {
   const navigationContainer = document.getElementById(
@@ -32,5 +33,6 @@ async function handlerOrder() {
 
   orderSummation();
   orderButton(items, data.data.totalPrice, userMeta);
+  initCheckoutValidation();
 }
 handlerOrder();
