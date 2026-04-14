@@ -8,8 +8,8 @@ import "./components/style.css";
 
 async function init() {
   await loadHeader();
+  await createMobileMenu();
   headerEvent();
-  createMobileMenu();
   initMenuAnimation();
   if (document.body.dataset.footer !== "false") {
     loadFooter();

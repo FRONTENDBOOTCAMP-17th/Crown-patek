@@ -1,21 +1,42 @@
-export function createMobileMenu() {
+import { getWishlist } from "../API/wishlist/wishlistApi";
+import { getProfileApi } from "../API/profile/getProfileApi";
+
+export async function createMobileMenu() {
+  let wishCount = 0;
+  let hasItems = false;
+  let userName = null;
+
+  try {
+    const wishdata = await getWishlist();
+    wishCount = wishdata.data.items.length;
+    hasItems = wishCount > 0;
+  } catch {
+    // 비로그인 또는 오류 시 기본값 유지
+  }
+
+  try {
+    const profile = await getProfileApi();
+    userName = profile.lastName;
+  } catch {
+    // 비로그인 상태
+  }
+
   const menuData = {
     mainNav: [
-      { label: "선글라스", href: "/" },
-      { label: "안경", href: "/" },
-      { label: "컬렉션", href: "/" },
+      { label: "선글라스", href: "/src/pages/sunglasses.html" },
+      { label: "안경", href: "/src/pages/glasses.html" },
+      { label: "컬렉션", href: "/src/pages/collection.html" },
     ],
     subNav: [
       { label: "스토리", href: "/" },
       { label: "서비스", href: "/" },
     ],
-    accountLinks: [
-      { label: "로그인 / 계정 생성", href: "/" },
-      { label: "주문 추가하기", href: "/" },
-    ],
+    accountLinks: userName
+      ? [{ label: `안녕하세요, ${userName}님`, href: "/src/components/profile/profile.html" }]
+      : [{ label: "로그인 / 계정 생성", href: "/src/components/login/login.html" }],
     wishlist: {
-      href: "/",
-      count: 0,
+      href: "/src/components/profile/profile.html",
+      count: wishCount,
       emptyMessage: "아직 위시리스트에 추가된 제품이 없습니다.",
     },
     utilLinks: [
@@ -33,11 +54,10 @@ export function createMobileMenu() {
   aside.className = "relative top-40 ml-5";
 
   const nav = document.createElement("nav");
-
-  const mainUl = createNavList(menuData.mainNav, "text-[22px]", "mb-3");
-  const subUl = createNavList(menuData.subNav, "text-[18px]");
-
-  nav.append(mainUl, subUl);
+  nav.append(
+    createNavList(menuData.mainNav, "text-[22px]", "mb-3"),
+    createNavList(menuData.subNav, "text-[18px]")
+  );
 
   const accountDiv = document.createElement("div");
   accountDiv.className = "mt-35 text-[12px] flex flex-col";
@@ -52,12 +72,14 @@ export function createMobileMenu() {
   const sup = document.createElement("sup");
   sup.textContent = menuData.wishlist.count;
   wishlistLink.appendChild(sup);
+  wishlistDiv.appendChild(wishlistLink);
 
-  const emptyMsg = document.createElement("p");
-  emptyMsg.className = "menu-animate font-medium mt-11";
-  emptyMsg.textContent = menuData.wishlist.emptyMessage;
-
-  wishlistDiv.append(wishlistLink, emptyMsg);
+  if (!hasItems) {
+    const emptyMsg = document.createElement("p");
+    emptyMsg.className = "menu-animate font-medium mt-11";
+    emptyMsg.textContent = menuData.wishlist.emptyMessage;
+    wishlistDiv.appendChild(emptyMsg);
+  }
 
   const utilDiv = document.createElement("div");
   utilDiv.className = "text-[12px] mt-12 font-medium flex flex-col gap-3";
