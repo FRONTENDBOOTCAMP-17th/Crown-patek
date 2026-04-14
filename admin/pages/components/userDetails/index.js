@@ -15,13 +15,33 @@ async function init() {
 
     render(data);
 
-    window.adjustPoint = async (type) => {
-      try {
-        await adjustPoint(type, data);
-      } catch (e) {
-        alert(e.message);
-      }
-    };
+    const addPointBtn = document.getElementById("addPointBtn");
+    const subPointBtn = document.getElementById("subPointBtn");
+    const closeBtn = document.getElementById("closeBtn");
+
+    if (closeBtn) {
+      closeBtn.addEventListener("click", () => history.back());
+    }
+
+    if (addPointBtn) {
+      addPointBtn.addEventListener("click", async () => {
+        try {
+          await adjustPoint("add", data);
+        } catch (e) {
+          alert(e.message);
+        }
+      });
+    }
+
+    if (subPointBtn) {
+      subPointBtn.addEventListener("click", async () => {
+        try {
+          await adjustPoint("sub", data);
+        } catch (e) {
+          alert(e.message);
+        }
+      });
+    }
   } catch (error) {
     console.error(error);
   }
