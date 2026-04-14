@@ -1,5 +1,5 @@
 import { addProduct } from "../../API/product/productAdd.js";
-import { uploadImage } from "../../API/product/imageApi.js";
+import { uploadImages } from "../../API/product/imageApi.js";
 
 const productForm = document.getElementById("productAddForm");
 const colorContainer = document.getElementById("colorContainer");
@@ -12,22 +12,23 @@ function imageUpload() {
   const placeholder = document.getElementById("uploadPlaceholder");
   const imageUrlInput = document.getElementById("imageUrlInput");
 
+  fileInput.multiple = true;
   uploadBtn.addEventListener("click", () => fileInput.click());
 
   fileInput.addEventListener("change", async (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
+    const files = [...e.target.files];
+    if (!files.length) return;
 
     try {
       placeholder.querySelector("span").textContent = "업로드 중...";
 
-      const uploadedUrl = await uploadImage(file);
+      const urls = await uploadImages(files);
 
-      previewImg.src = uploadedUrl;
+      previewImg.src = urls[0];
       previewImg.classList.remove("hidden");
       placeholder.classList.add("hidden");
 
-      imageUrlInput.value = uploadedUrl;
+      imageUrlInput.value = JSON.stringify(urls);
     } catch (error) {
       alert(error.message);
       placeholder.querySelector("span").textContent = "업로드 실패. 다시 시도";
@@ -86,15 +87,14 @@ function createColor(value = "") {
 
   return row;
 }
+
 function saveColors() {
   const inputs = colorContainer.querySelectorAll("[name='colors']");
   const colors = [];
 
   for (const input of inputs) {
     const value = input.value.trim();
-    if (value) {
-      colors.push(value);
-    }
+    if (value) colors.push(value);
   }
   localStorage.setItem("addProductColors", JSON.stringify(colors));
 }
@@ -138,6 +138,7 @@ if (productForm) {
   productForm.addEventListener("submit", async (e) => {
     e.preventDefault();
     const formData = new FormData(productForm);
+    const imageUrlInput = document.getElementById("imageUrlInput");
 
     const colorInputs = colorContainer.querySelectorAll("[name='colors']");
     const colors = [];
@@ -152,8 +153,8 @@ if (productForm) {
       price: Number(formData.get("price")),
       description: formData.get("description"),
       stock: Number(formData.get("stock")),
-      colors: colors,
-      images: [imageUrlInput.value],
+      colors,
+      images: JSON.parse(imageUrlInput.value || "[]"),
       specifications: {
         frameWidth: formData.get("frameWidth"),
         lensHeight: formData.get("lensHeight"),
