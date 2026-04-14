@@ -1,6 +1,6 @@
 import { getProductList } from "../../API/product/productListApi.js";
 import { editProduct } from "../../API/product/productEditApi.js";
-import { uploadImage } from "../../API/product/imageApi.js";
+import { uploadImages } from "../../API/product/imageApi.js";
 
 const form = document.getElementById("productEditForm");
 const colorContainer = document.getElementById("colorContainer");
@@ -41,7 +41,6 @@ function createColor(value = "") {
     const rows = colorContainer.querySelectorAll(".flex.items-center.gap-2");
     if (rows.length === 1) {
       input.value = "";
-
       return;
     }
     row.remove();
@@ -70,6 +69,7 @@ function saveColors(productId) {
     JSON.stringify(colors),
   );
 }
+
 function loadColors(productId, backColors = []) {
   const stored = localStorage.getItem(`editProduct_colors_${productId}`);
   let colors = stored ? JSON.parse(stored) : backColors;
@@ -111,20 +111,21 @@ async function EditPage() {
   const imageUrlInput = document.getElementById("imageUrlInput");
   const imageUploadBtn = document.getElementById("imageUploadBtn");
 
+  imageInput.multiple = true;
   imageUploadBtn.addEventListener("click", () => imageInput.click());
 
   imageInput.addEventListener("change", async (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
+    const files = [...e.target.files];
+    if (!files.length) return;
 
     try {
       uploadPlaceholder.querySelector("span").textContent = "업로드 중...";
-      const uploadedUrl = await uploadImage(file);
+      const urls = await uploadImages(files);
 
-      imagePreview.src = uploadedUrl;
+      imagePreview.src = urls[0];
       imagePreview.classList.remove("hidden");
       uploadPlaceholder.classList.add("hidden");
-      imageUrlInput.value = uploadedUrl;
+      imageUrlInput.value = JSON.stringify(urls);
     } catch (err) {
       alert("이미지 업로드 실패: " + err.message);
     }
@@ -135,6 +136,7 @@ async function EditPage() {
     location.href = "products.html";
     return;
   }
+
   addColorBtn.addEventListener("click", () => {
     colorContainer.appendChild(createColor());
     saveColors();
@@ -146,11 +148,10 @@ async function EditPage() {
 
     if (item) {
       if (item.images && item.images.length > 0) {
-        const currentImg = item.images[0];
-        imagePreview.src = currentImg;
+        imagePreview.src = item.images[0];
         imagePreview.classList.remove("hidden");
         uploadPlaceholder.classList.add("hidden");
-        imageUrlInput.value = currentImg;
+        imageUrlInput.value = JSON.stringify(item.images);
       }
       form.name.value = item.name;
       form.price.value = item.price;
@@ -181,9 +182,7 @@ async function EditPage() {
     for (const input of colorInputs) {
       const value = input.value.trim();
       if (value) {
-        colors.push({
-          name: value,
-        });
+        colors.push({ name: value });
       }
     }
 
@@ -195,7 +194,7 @@ async function EditPage() {
       description: formData.get("description"),
       stock: Number(formData.get("stock")),
       colors,
-      images: imageUrlInput.value ? [imageUrlInput.value] : [],
+      images: JSON.parse(imageUrlInput.value || "[]"),
       specifications: {
         frameWidth: formData.get("frameWidth"),
         lensHeight: formData.get("lensHeight"),
