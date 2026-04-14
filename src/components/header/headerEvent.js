@@ -10,7 +10,5 @@ export function headerEvent() {
 
     line2.classList.toggle("-translate-y-[2.5px]");
     line2.classList.toggle("-rotate-45");
-
-    header.classList.toggle("is-active");
   });
 }

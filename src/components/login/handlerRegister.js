@@ -25,13 +25,15 @@ async function handlerRegister() {
     form.addEventListener("submit", async (e) => {
         e.preventDefault();
 
-        const email = document.getElementById("emailInput").value.trim();
-        const pw = document.getElementById("passwordInput").value.trim();
-        const fn = document.getElementById("firstName").value.trim();
-        const ln = document.getElementById("lastName").value.trim();
-        const phone = document.getElementById("phoneNumber").value.trim();
-        const address = document.getElementById("address").value.trim();
-        const addressDetail = document.getElementById("addressDetail").value.trim();
+        const userData = {
+            email: document.getElementById("emailInput").value.trim(),
+            password: document.getElementById("passwordInput").value.trim(),
+            firstName: document.getElementById("firstName").value.trim(),
+            lastName: document.getElementById("lastName").value.trim(),
+            phone: document.getElementById("phoneNumber").value.trim(),
+            address: document.getElementById("address").value.trim(),
+            addressDetail: document.getElementById("addressDetail").value.trim(),
+        }
 
         if (!checkPassword()) {
             alert("비밀번호가 일치하지 않습니다.");
@@ -52,7 +54,7 @@ async function handlerRegister() {
         }
 
         try {
-            await postRegisterApi(email, pw, fn, ln, phone, address, addressDetail);
+            await postRegisterApi(userData);
             alert("회원가입이 완료되었습니다.");
             window.location.href = "/src/components/login/login.html";
         } catch (error) {

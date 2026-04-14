@@ -5,8 +5,6 @@ export async function productCard(container, products) {
     const html = await response.text();
 
     for (const product of products.data) {
-        console.log(product.images[0]);
-
         const parser = new DOMParser();
         const doc = parser.parseFromString(html, 'text/html');
         const card = doc.body.firstElementChild;
