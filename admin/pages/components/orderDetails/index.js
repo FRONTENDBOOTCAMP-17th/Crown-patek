@@ -8,8 +8,6 @@ async function updateOrderDetails() {
         const id = params.get("orderId");
 
         const data = await orderDetailsAPI(id);
-        console.log(data);
-
 
         renderOrderDetails(data);
         chaseProductState(data);
