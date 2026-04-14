@@ -1,6 +1,0 @@
-{
-  "name": "@gentlelion/admin",
-  "dependencies": {
-    "@gentlelion/src": "*"
-  }
-}
