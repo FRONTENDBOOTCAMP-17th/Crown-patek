@@ -18,7 +18,6 @@ async function updateOrderDetails() {
             window.location.href = "/pages/login.html";
             return;
         }
-        console.error(error);
     }
 }
 
