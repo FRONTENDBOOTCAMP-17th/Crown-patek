@@ -10,6 +10,16 @@ export async function orderButton(items, pointsToUse, userMeta) {
     addressDetail: userMeta.addressDetail,
   };
 
+  const userEmail = document.getElementById("userEmail");
+  const userName = document.getElementById("userName");
+  const phoneNum = document.getElementById("phoneNum");
+  const address = document.getElementById("address");
+
+  userEmail.textContent = userMeta.email;
+  userName.textContent = shippingAddress.recipientName;
+  phoneNum.textContent = shippingAddress.phone;
+  address.textContent = shippingAddress.address + shippingAddress.addressDetail;
+
   buttons.forEach((button) => {
     button.addEventListener("click", () =>
       handleCheckout(items, shippingAddress, pointsToUse),
