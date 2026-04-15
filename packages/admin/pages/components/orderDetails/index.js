@@ -1,14 +1,14 @@
 import { orderDetailsAPI } from "../../API/order/orderDetailsApi.js";
 import { renderOrderDetails } from "./renderOrderDetails.js";
 import { chaseProductState } from "./chaseProductState.js";
-import { cancleButton } from "./cancleButton.js";
+import { cancelButton } from "./cancelButton.js";
 
 async function updateOrderDetails() {
-    try {
-        const params = new URLSearchParams(window.location.search);
-        const id = params.get("orderId");
+  try {
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get("orderId");
 
-        const data = await orderDetailsAPI(id);
+    const data = await orderDetailsAPI(id);
 
         renderOrderDetails(data);
         chaseProductState(data);
@@ -19,6 +19,8 @@ async function updateOrderDetails() {
             return;
         }
     }
+    console.error(error);
+  }
 }
 
 updateOrderDetails();
