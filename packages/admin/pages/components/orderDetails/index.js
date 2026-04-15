@@ -15,7 +15,7 @@ async function updateOrderDetails() {
         cancleButton();
     } catch (error) {
         if (error.status === 401) {
-            window.location.href = "/admin/pages/login.html";
+            window.location.href = "/pages/login.html";
             return;
         }
         console.error(error);
