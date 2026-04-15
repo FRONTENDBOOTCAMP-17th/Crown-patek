@@ -1,0 +1,46 @@
+:root {
+  /* user 페이지 */
+  --subTitle-button: #dfe3e8;
+  --text-primary: #111111;
+  --text-gray: #858585;
+  --border: #d9d9d9;
+  --bg: #f3f4f6;
+  --red: #ff7b82;
+
+  /* admin 페이지 */
+  --cancle-button: #e5e7eb;
+  --active-button: #000000;
+  --admin-green: #00a63e;
+  --admin-red: #e7000b;
+  --admin-lightGreen: #dcfce7;
+  --admin-lightRed: #ffe2e2;
+  --admin-gray: #6a7282;
+  --admin-border: #99a1af;
+  --admin-page: #4a5565;
+}
+
+#subNav {
+  cursor: grab;
+}
+
+#subNav.dragging {
+  cursor: grabbing;
+}
+
+/* header css */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.carousel-wrap {
+  aspect-ratio: 520 / 718;
+  touch-action: pan-y;
+  -webkit-user-select: none;
+}
+.carousel-wrap.grabbing {
+  cursor: grabbing;
+}

@@ -1,0 +1,48 @@
+<div class="flex gap-4 md:gap-6 py-4 min-w-100 md:min-w-150 ml-auto mr-auto">
+  <figure
+    class="flex justify-center items-center shrink-0 w-36 h-36 md:w-48 md:h-48 overflow-hidden"
+  >
+    <img
+      class="w-36 h-36 md:w-48 md:h-48 scale-180 object-cover object-center cart-product-image"
+      loading="lazy"
+      src=""
+      alt=""
+    />
+  </figure>
+
+  <!-- 상품 정보 -->
+  <div class="flex justify-between">
+    <div class="flex flex-col gap-1 justify-center">
+      <h2 class="text-[13px] md:text-[16px] font-medium leading-[1.4] cart-product-name"></h2>
+      <p class="text-[12px] md:text-[15px] text-neutral-500 cart-product-color"></p>
+      <p class="text-[13px] md:text-[16px] font-medium cart-product-price"></p>
+
+      <!-- 수량 -->
+      <div class="flex items-center gap-2 mt-2">
+        <span class="text-[12px] md:text-[15px] text-neutral-500">수량</span>
+        <select
+          class="cart-quantity text-[13px] md:text-[16px] border-none outline-none cursor-pointer bg-transparent"
+        >
+          <option>1</option>
+          <option>2</option>
+          <option>3</option>
+          <option>4</option>
+          <option>5</option>
+          <option>6</option>
+          <option>7</option>
+          <option>8</option>
+          <option>9</option>
+          <option>10</option>
+        </select>
+      </div>
+
+      <!-- 삭제 버튼 -->
+      <button
+        class="cart-delete-btn mt-2 w-fit text-[12px] md:text-[15px] text-neutral-500 underline underline-offset-2 cursor-pointer hover:text-black transition-colors"
+        type="button"
+      >
+        삭제하기
+      </button>
+    </div>
+  </div>
+</div>

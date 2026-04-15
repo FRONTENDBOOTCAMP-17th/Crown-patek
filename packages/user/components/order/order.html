@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="ko-KR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>결제</title>
+    <script type="module" src="../../layout.js"></script>
+    <script type="module" src="../../main.js"></script>
+    <script type="module" src="./handlerOrder.js"></script>
+  </head>
+  <body
+    class="font-gentle bg-(--bg) flex flex-col min-h-screen"
+    data-theme="light"
+  >
+    <aside class="navigation mx-3 md:px-8 lg:px-15"></aside>
+
+    <main class="flex-1 md:flex">
+      <div class="flex-1 flex flex-col gap-6 p-6 md:mr-80">
+        <h2 class="text-[16px] font-medium">결제</h2>
+
+        <section class="flex items-start justify-between">
+          <div class="flex flex-col gap-4 text-[13px]">
+            <p>1 이메일 주소</p>
+            <p class="text-(--text-gray)">
+              <span id="userEmail">test@email.com</span> 계정으로
+              로그인하셨습니다.
+            </p>
+          </div>
+        </section>
+
+        <section class="flex flex-col gap-4">
+          <p class="text-[13px]">2 배송</p>
+          <p class="text-[13px]">주소 선택</p>
+          <button id="addressBtn"
+            class="cursor-pointer text-start flex items-center justify-between border border-(--border) p-3 rounded-xl"
+          >
+            <div class="flex flex-col text-[12px]">
+              <p id="userName">TEST</p>
+              <p>배송지 12345, 대한민국</p>
+              <p id="phoneNum">010-1234-5678</p>
+            </div>
+          </button>
+        </section>
+
+        <section class="flex flex-col gap-3">
+          <p class="text-[13px]">배송 방법 선택하기</p>
+          <button id="shippingBtn"
+            class="text-start cursor-pointer flex flex-col text-[12px] border border-(--border) p-3 rounded-xl"
+          >
+            <p>무료</p>
+            <p class="text-[10px] text-(--text-gray)">
+              배송 예정 기간: 영업일 기준 2-3일 소요
+            </p>
+          </button>
+        </section>
+
+        <section class="flex flex-col gap-4">
+          <p class="text-[13px]">3 결제</p>
+          <p class="text-[13px]">결제 수단을 선택해 주세요</p>
+          <button id="paymentBtn"
+            class="w-full cursor-pointer text-center text-[12px] border border-(--border) p-3 rounded-xl"
+          >
+            Point
+          </button>
+        </section>
+      </div>
+
+      <aside
+        id="orderNavigationContainer"
+        class="md:w-80 md:fixed md:right-0 md:top-0 md:h-full md:overflow-y-auto"
+      >
+        <div
+          id="orderSummation"
+          class="px-6 justify-between mt-10 flex md:hidden"
+        >
+          <p class="text-[12px]">주문 요약</p>
+          <button
+            class="order-summation-btn text-[12px] cursor-pointer flex items-center gap-1"
+          >
+            <span>₩410,000</span>
+            <svg
+              class="inline-block"
+              xmlns="http://www.w3.org/2000/svg"
+              width="22"
+              height="22"
+              viewBox="0 0 24 24"
+              fill="none"
+            >
+              <path
+                d="M6 9L12 15L18 9"
+                stroke="black"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </button>
+        </div>
+
+        <!-- 상품 목록 -->
+        <section
+          class="order-container px-6 grid grid-cols-2 items-center gap-4 mx-auto mt-4"
+        ></section>
+      </aside>
+    </main>
+  </body>
+</html>
