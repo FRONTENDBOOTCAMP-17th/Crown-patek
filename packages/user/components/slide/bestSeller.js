@@ -1,4 +1,5 @@
 import { getProductList } from "../API/product/productListApi.js";
+import { getDisplayImage } from "./productImage.js";
 
 export async function renderBestSeller() {
   const wrapper = document.querySelector(".best-swiper .swiper-wrapper");
@@ -18,7 +19,7 @@ export async function renderBestSeller() {
         <div class="relative overflow-hidden w-44 h-60 md:w-97.5 md:h-165.75">
           <figure class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-64 md:w-194 md:h-194">
             <img
-              src="${item.images?.[0] ?? ""}"
+              src="${getDisplayImage(item)}"
               class="w-full h-full object-contain pointer-events-none"
               alt="${item.name}"
             />
