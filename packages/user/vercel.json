@@ -1,0 +1,20 @@
+{
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "rewrites": [
+    { "source": "/sunglasses", "destination": "/pages/sunglasses.html" },
+    { "source": "/glasses", "destination": "/pages/glasses.html" },
+    { "source": "/collection", "destination": "/pages/collection.html" },
+    { "source": "/order", "destination": "/pages/order.html" },
+    { "source": "/product-detail", "destination": "/pages/product-detail.html" },
+    { "source": "/login", "destination": "/components/login/login.html" },
+    { "source": "/register", "destination": "/components/login/register.html" },
+    { "source": "/privacy", "destination": "/components/login/privacy.html" },
+    { "source": "/terms", "destination": "/components/login/terms.html" },
+    { "source": "/cart", "destination": "/components/cart/cart.html" },
+    { "source": "/profile", "destination": "/components/profile/profile.html" },
+    { "source": "/wishlist", "destination": "/components/profile/wishList.html" },
+    { "source": "/order-details", "destination": "/components/profile/orderDetails.html" },
+    { "source": "/buy", "destination": "/components/profile/buyProduct.html" }
+  ]
+}
