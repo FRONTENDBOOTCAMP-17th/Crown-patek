@@ -10,6 +10,7 @@
     { "source": "/products/add", "destination": "/pages/productsAdd.html" },
     { "source": "/products/edit", "destination": "/pages/productEdit.html" },
     { "source": "/users", "destination": "/pages/users.html" },
-    { "source": "/user-details", "destination": "/pages/user-details.html" }
+    { "source": "/user-details", "destination": "/pages/user-details.html" },
+    { "source": "/pages/components/aside/navigation", "destination": "/pages/components/aside/navigation.html" }
   ]
 }
