@@ -7,23 +7,32 @@ test.describe("상품 수정 페이지", () => {
   test.beforeEach(async ({ page }) => {
     await login(page);
 
-    // 상품 목록 API에서 첫 번째 상품 ID 저장
-    const [response] = await Promise.all([
-      page.waitForResponse(
-        (res) =>
-          res.url().includes("/admin/products") &&
-          res.request().method() === "GET",
-      ),
-      page.goto("/pages/products.html"),
-    ]);
-    const body = await response.json();
-    productId = body.data?.[0]?.id;
+    // 응답 body를 콜백 내부에서 즉시 읽어 저장
+    let productData = null;
+    page.on("response", async (res) => {
+      if (
+        res.url().includes("/admin/products") &&
+        res.request().method() === "GET"
+      ) {
+        try {
+          const body = await res.json();
+          productData = body;
+        } catch {}
+      }
+    });
 
-    // #editBtn 클릭으로 수정 페이지 이동
+    await page.goto("/pages/products.html");
+
+    // 테이블 로드 대기
+    await page.waitForSelector("table tbody tr");
+    productId = productData?.data?.[0]?.id;
+
     const editBtn = page.locator("table tbody tr").first().locator("#editBtn");
-    await Promise.all([page.waitForURL(/productEdit/), editBtn.click()]);
+    await Promise.all([
+      page.waitForURL(/productEdit/, { waitUntil: "domcontentloaded" }),
+      editBtn.click(),
+    ]);
 
-    // API로 데이터 비동기 로드 완료 대기
     await page.waitForFunction(() => {
       const input = document.querySelector('input[name="name"]');
       return input && input.value.length > 0;
@@ -47,12 +56,10 @@ test.describe("상품 수정 페이지", () => {
     await expect(page.locator("#backBtnBottom")).toBeVisible();
   });
 
-  // API 테스트
   test("상품 수정 API가 200을 반환한다", async ({ page }) => {
     if (!productId) return;
     const token = await page.evaluate(() => localStorage.getItem("token"));
 
-    // 현재 폼 값 그대로 수집해서 전송
     const currentData = await page.evaluate(() => {
       const form = document.getElementById("productEditForm");
       const colorInputs = document.querySelectorAll("[name='colors']");

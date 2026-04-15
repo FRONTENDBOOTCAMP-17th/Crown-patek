@@ -6,7 +6,6 @@ const API_ORDERS = 'https://api.fullstackfamily.com/api/gentlelion/v1/orders';
 
 test.describe('결제 페이지', () => {
 
-  // 실제 로그인으로 토큰 획득
   test.beforeEach(async ({ page }) => {
     await page.goto(LOGIN_PATH);
     await page.locator('#emailInput').fill('123@123.com');
@@ -19,19 +18,26 @@ test.describe('결제 페이지', () => {
   });
 
   test('구매 버튼 클릭 시 주문 API가 호출되고 홈으로 이동한다', async ({ page }) => {
-    // API 호출 캡처
     let requestBody = null;
     await page.route(API_ORDERS, async route => {
       requestBody = JSON.parse(route.request().postData());
-      const response = await route.fetch(); // 실제 API 호출
-      await route.fulfill({ response }); // 응답 그대로 전달
+      const response = await route.fetch();
+      await route.fulfill({ response });
     });
 
     await page.goto(ORDER_PATH);
 
-    // 구매 버튼 렌더링 대기
-    await expect(page.locator('.order-checkout-btn').first()).toBeVisible({ timeout: 10000 });
-    await page.locator('.order-checkout-btn').first().click();
+    await page.waitForSelector('.order-checkout-btn', { state: 'attached' });
+
+    // 세 조건 모두 선택
+    await page.locator('#addressBtn').click();
+    await page.locator('#shippingBtn').click();
+    await page.locator('#paymentBtn').click();
+
+    // 화면에 실제로 보이는 버튼만 선택
+    const checkoutBtn = page.locator('.order-checkout-btn:visible').first();
+    await expect(checkoutBtn).toBeEnabled({ timeout: 10000 });
+    await checkoutBtn.click();
 
     // API 요청 body 검증
     expect(requestBody).not.toBeNull();

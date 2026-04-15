@@ -1,8 +1,17 @@
 import { test, expect } from "@playwright/test";
 
+const LOGIN_PATH = '/components/login/login.html';
+
 test.describe("컬렉션 페이지", () => {
+
   test.beforeEach(async ({ page }) => {
-    await page.goto("/pages/collection.html");
+    await page.goto(LOGIN_PATH);
+    await page.locator('#emailInput').fill('123@123.com');
+    await page.locator('#pwInput').fill('123');
+    await Promise.all([
+      page.waitForURL('/'),
+      page.locator('button[type="submit"]').click(),
+    ]);
   });
 
   test("컬렉션 상품 목록이 API에서 불러와서 렌더링된다", async ({ page }) => {
@@ -27,6 +36,7 @@ test.describe("컬렉션 페이지", () => {
   });
 
   test("상품 카드에 이름, 가격, 이미지가 표시된다", async ({ page }) => {
+    await page.goto("/pages/collection.html");
     await page.waitForSelector("#productContainer .product-name");
 
     await expect(page.locator(".product-name").first()).toBeVisible();
@@ -35,6 +45,7 @@ test.describe("컬렉션 페이지", () => {
   });
 
   test("상품 클릭 시 상품 상세 페이지로 이동한다", async ({ page }) => {
+    await page.goto("/pages/collection.html");
     await page.waitForSelector("#productContainer a");
 
     const firstProduct = page.locator("#productContainer a").first();
@@ -44,6 +55,7 @@ test.describe("컬렉션 페이지", () => {
   });
 
   test("더보기 버튼 클릭 시 추가 상품이 로드된다", async ({ page }) => {
+    await page.goto("/pages/collection.html");
     await page.waitForSelector("#productContainer .product-name");
 
     const beforeCount = await page

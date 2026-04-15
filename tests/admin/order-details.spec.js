@@ -8,6 +8,8 @@ test.describe("주문 상세 페이지", () => {
     await login(page);
     await page.goto("/pages/orders.html");
 
+    await page.waitForSelector("#productTableBody tr");
+
     const detailBtn = page
       .locator("#productTableBody tr")
       .first()
@@ -20,6 +22,12 @@ test.describe("주문 상세 페이지", () => {
     ]);
 
     await popup.waitForLoadState();
+  });
+
+  test.afterEach(async () => {
+    if (popup && !popup.isClosed()) {
+      await popup.close();
+    }
   });
 
   test("주문 상세 페이지가 정상적으로 로드된다", async () => {
@@ -51,16 +59,16 @@ test.describe("주문 상세 페이지", () => {
     await expect(popup.locator("#cancelBtn")).toBeVisible();
   });
 
-  // API 테스트
   test("주문 상세 API가 200을 반환한다", async () => {
     const url = popup.url();
     const orderId = new URL(url).searchParams.get("orderId");
+    const token = await popup.evaluate(() => localStorage.getItem("token"));
 
     const response = await popup.request.get(
       `https://api.fullstackfamily.com/api/gentlelion/v1/admin/orders/${orderId}`,
       {
         headers: {
-          Authorization: `Bearer ${await popup.evaluate(() => localStorage.getItem("token"))}`,
+          Authorization: `Bearer ${token}`,
         },
       },
     );
@@ -70,12 +78,13 @@ test.describe("주문 상세 페이지", () => {
   test("주문 상세 API 응답에 주문 정보가 존재한다", async () => {
     const url = popup.url();
     const orderId = new URL(url).searchParams.get("orderId");
+    const token = await popup.evaluate(() => localStorage.getItem("token"));
 
     const response = await popup.request.get(
       `https://api.fullstackfamily.com/api/gentlelion/v1/admin/orders/${orderId}`,
       {
         headers: {
-          Authorization: `Bearer ${await popup.evaluate(() => localStorage.getItem("token"))}`,
+          Authorization: `Bearer ${token}`,
         },
       },
     );
