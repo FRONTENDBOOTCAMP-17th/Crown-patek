@@ -6,6 +6,7 @@
     <title>상품 상세 | 젠틀라이온 | 공식 온라인 스토어</title>
     <link rel="stylesheet" href="../style.css" />
     <link rel="stylesheet" href="../components/style.css" />
+    <script type="module" src="../layout.js"></script>
     <script type="module" src="../main.js"></script>
   </head>
 
@@ -13,46 +14,7 @@
     <div
       id="mobileMenu"
       class="fixed opacity-0 pointer-events-none transition-all duration-500 top-0 z-49 left-0 bg-white w-screen h-full"
-    >
-      <aside class="relative top-40 ml-5">
-        <nav>
-          <ul class="font-medium flex flex-col gap-2 mb-3">
-            <li class="menu-animate text-[22px]">
-              <a class="w-max" href="/">선글라스</a>
-            </li>
-            <li class="menu-animate text-[22px]">
-              <a class="w-max" href="/">안경</a>
-            </li>
-            <li class="menu-animate text-[22px]">
-              <a class="w-max" href="/">컬렉션</a>
-            </li>
-          </ul>
-          <ul class="font-medium flex flex-col gap-2">
-            <li class="menu-animate text-[18px]">
-              <a class="w-max" href="/">스토리</a>
-            </li>
-            <li class="menu-animate text-[18px]">
-              <a class="w-max" href="/">서비스</a>
-            </li>
-          </ul>
-        </nav>
-        <div class="mt-35 text-[12px] flex flex-col">
-          <a class="menu-animate w-max" href="/">로그인 / 계정 생성</a>
-          <a class="menu-animate w-max" href="/">주문 추가하기</a>
-        </div>
-        <div class="mt-2 text-[12px] w-max">
-          <a class="menu-animate w-max" href="/">위시리스트<sup>0</sup></a>
-          <p class="menu-animate font-medium mt-11">
-            아직 위시리스트에 추가된 제품이 없습니다.
-          </p>
-        </div>
-        <div class="text-[12px] mt-12 font-medium flex flex-col gap-3">
-          <a class="menu-animate w-max" href="/">고객 서비스</a>
-          <a class="menu-animate w-max" href="/">국가: South Korea</a>
-        </div>
-      </aside>
-    </div>
-
+    ></div>
     <aside class="navigation mx-3 md:px-8 lg:px-15"></aside>
 
     <div class="min-h-screen">
@@ -77,12 +39,10 @@
     </div>
 
     <script type="module">
-      import { loadHeader } from "../components/header/header.js";
-      import { loadFooter } from "../components/footer/footer.js";
       import { wishlist } from "../components/wishlist/index.js";
       import { createImageCarousel } from "../components/carousel/imageCarousel.js";
       import { navigation } from "../components/navigation/index.js";
-      import { initMenuAnimation } from "../components/mobilemenu/menuAnimation.js";
+
       import { renderColorChips } from "../data/colorChips.js";
       import {
         fetchProduct,
@@ -104,10 +64,7 @@
 
       const BASE_URL = "https://api.fullstackfamily.com/api/gentlelion/v1";
 
-      await loadHeader();
-      await loadFooter();
       navigation();
-      initMenuAnimation();
 
       const params = new URLSearchParams(window.location.search);
       const productId = params.get("productId");
